@@ -16,7 +16,6 @@ Abstract: ...
 │
 ├── data/
 │   ├── external/      <- Data from third party sources
-│   ├── parameters/    <- Data for perturbed parameter values
 │   ├── processed/     <- Final analysis-ready data
 │   └── raw/           <- Original immutable data
 │
