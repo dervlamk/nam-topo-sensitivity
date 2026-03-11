@@ -1,0 +1,34 @@
+name: nam_topo
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.11
+  # Core scientific stack
+  - numpy
+  - scipy
+  - pandas
+  # Geoscience data
+  - xarray
+  - netcdf4
+  - cftime
+  - cf_xarray
+  # Regridding (xesmf 0.8.9+ required for esmpy 8.x compatibility)
+  - esmf=8.*=nompi*        # no-MPI build to avoid MPI dependency issues on HPC
+  - esmpy
+  - xesmf>=0.8.9
+  - sparse                  # required by xesmf >= 0.7
+  # Geospatial
+  - cartopy
+  - regionmask
+  - pyproj
+  - shapely
+  # Meteorology
+  - metpy
+  # Visualization
+  - matplotlib
+  - cmocean
+  - seaborn
+  # Jupyter
+  - ipykernel
+  - jupyter_client
