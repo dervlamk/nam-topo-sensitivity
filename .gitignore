@@ -4,6 +4,9 @@ __pycache__/
 *.pyo
 *.pyd
 
+# Mac
+*/.DS_Store
+
 # Jupyter
 .ipynb_checkpoints/
 1JAN0013.rsfE3.1_PPE_dmk.nc       DEC0013.subddE3.1_PPE_dmk.nc                  JAN0011.accE3.1_PPE_dmk.nc           lwdscs.ANN0011-0013.E3.1_PPE_dmk.nc      OCT0011.subddE3.1_PPE_dmk.nc               runtime_opts                        sswOnOff
