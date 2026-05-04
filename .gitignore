@@ -10,6 +10,7 @@ __pycache__/
 
 # Jupyter
 .ipynb_checkpoints/
+notebooks/deprecated/
 
 # Logs
 *.log
