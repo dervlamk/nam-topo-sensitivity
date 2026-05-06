@@ -200,3 +200,34 @@ def annual_season_mean(ds): #, calendar='standard'):
 			year_max = ann_seasonal_mean[season].year.max()
 			ann_seasonal_mean[season] = ann_seasonal_mean[season].sel(year=slice(year_min, year_max)) #.isel(year=slice(1,len(ann_seas_mean['DJF'].year)))
 	return ann_seasonal_mean
+
+
+def jas_seasonal_mean(ds):
+    """Climatological JAS mean weighted by days_in_month. Assumes no leap years."""
+    jas = ds.sel(time=ds['time.month'].isin([7, 8, 9]))
+    weights = jas['time'].dt.days_in_month
+    return (jas * weights).sum(dim='time') / weights.sum(dim='time')
+
+
+def jas_yearly_mean(ds):
+    """Per-year JAS mean weighted by days_in_month. Assumes no leap years."""
+    jas = ds.sel(time=ds['time.month'].isin([7, 8, 9]))
+    weights = jas['time'].dt.days_in_month
+    return ((jas * weights).groupby('time.year').sum(dim='time') /
+            weights.groupby('time.year').sum(dim='time'))
+
+
+def match_lat_lon_names(ds):
+    """Rename non-standard lat/lon coordinate names to 'lat' and 'lon'."""
+    for lat_name in ['y', 'latitude', 'nav_lat']:
+        if lat_name in ds.coords and 'lat' not in ds.coords:
+            ds = ds.rename({lat_name: 'lat'})
+    for lon_name in ['x', 'longitude', 'nav_lon']:
+        if lon_name in ds.coords and 'lon' not in ds.coords:
+            ds = ds.rename({lon_name: 'lon'})
+    return ds
+
+
+def windSpd(u, v):
+    """Compute wind speed magnitude from u and v components."""
+    return np.sqrt(u**2 + v**2)
