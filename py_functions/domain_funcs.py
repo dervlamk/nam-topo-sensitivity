@@ -1,5 +1,4 @@
 import numpy as np
-import regionmask
 
 
 def rotated_box(lon0, lat0, width, height, angle_deg):
@@ -67,6 +66,8 @@ def nam_regions():
     ])
     coords_calc['south'] = [((lon + 360) % 360, lat) for lon, lat in coords_map['south']]
 
+    np.NaN = np.nan  # regionmask <0.9 compat with NumPy 2.0
+    import regionmask
     regions = regionmask.Regions(
         outlines=[coords_calc['south'], coords_calc['north']],
         names=["south", "north"],
