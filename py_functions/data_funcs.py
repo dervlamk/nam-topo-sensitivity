@@ -1,7 +1,7 @@
 import os
 import sys
 import xarray as xr
-#import cf_xarray as cf
+import cf_xarray
 import netCDF4 as nc
 import numpy as np
 import metpy.calc as mp
