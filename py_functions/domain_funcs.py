@@ -22,20 +22,22 @@ def rotated_box(lon0, lat0, width, height, angle_deg):
     return rotated
 
 
-def regional_weighted_mean(da, region_name, regions):
-    """Area-weighted mean of da within a single named regionmask region.
+def regional_weighted_mean(da, regions):
+    """Area-weighted mean of da for all regions, returning a DataArray with a 'region' dim.
 
     Parameters
     ----------
-    da          : xr.DataArray with 'lat' and 'lon' coordinates
-    region_name : str matching one of regions.names
-    regions     : regionmask.Regions object
+    da      : xr.DataArray with 'lat' and 'lon' coordinates
+    regions : regionmask.Regions object
+
+    Returns
+    -------
+    xr.DataArray with a named 'region' coordinate; use .sel(region=name) to extract one.
     """
     mask3d = regions.mask_3D(da)
-    region_index = regions.names.index(region_name)
-    masked = da.where(mask3d.sel(region=region_index))
     weights = np.cos(np.deg2rad(da.lat))
-    return masked.weighted(weights).mean(("lat", "lon"))
+    result = da.where(mask3d).weighted(weights).mean(("lat", "lon"))
+    return result.assign_coords(region=mask3d.names)
 
 
 def nam_regions():
