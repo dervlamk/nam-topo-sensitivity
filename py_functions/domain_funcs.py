@@ -1,5 +1,11 @@
 import numpy as np
 
+# NumPy 2.0 removed the np.NaN alias that regionmask <0.10 references during its
+# own import. Restore it at module load so it is in place before regionmask is
+# imported anywhere in the process.
+if not hasattr(np, "NaN"):
+    np.NaN = np.nan
+
 
 def rotated_box(lon0, lat0, width, height, angle_deg):
     """Return the four corners of a rotated rectangular polygon centered at (lon0, lat0).
@@ -66,7 +72,14 @@ def nam_regions():
     ])
     coords_calc['south'] = [((lon + 360) % 360, lat) for lon, lat in coords_map['south']]
 
-    np.NaN = np.nan  # regionmask <0.9 compat with NumPy 2.0
+    # An earlier import (before the np.NaN shim above was in place) can leave a
+    # half-initialized regionmask cached in sys.modules with no Regions class.
+    # Purge it so the import below re-runs cleanly without a kernel restart.
+    import sys
+    if "regionmask" in sys.modules and not hasattr(sys.modules["regionmask"], "Regions"):
+        for _mod in [m for m in list(sys.modules)
+                     if m == "regionmask" or m.startswith("regionmask.")]:
+            del sys.modules[_mod]
     import regionmask
     regions = regionmask.Regions(
         outlines=[coords_calc['south'], coords_calc['north']],
