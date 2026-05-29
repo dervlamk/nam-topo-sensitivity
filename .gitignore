@@ -24,3 +24,6 @@ notebooks/deprecated/
 
 # Old figures
 figs/deprecated
+
+# Large files
+figs/study_region_geographic_features.pdf
