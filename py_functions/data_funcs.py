@@ -231,3 +231,78 @@ def match_lat_lon_names(ds):
 def windSpd(u, v):
     """Compute wind speed magnitude from u and v components."""
     return np.sqrt(u**2 + v**2)
+
+
+def find_coastline_offset(field, windows, land_thresh=0, lon_name='lon', lat_name='lat',
+                           resolution='50m', max_shift_deg=1.0):
+    """
+    Empirically measure the rigid lon/lat shift that best aligns a gridded field's
+    implied land/ocean mask with the cartopy Natural Earth coastline.
+
+    Diagnoses the grid-registration bug documented for the OIPC isoscape in
+    nam-dD-lig/analysis-repo/DATA_MANIFEST.md ("OIPC grid registration"): some gridded
+    products carry a coordinate array offset from the true lon/lat of each cell by a
+    fixed number of grid cells, so the field disagrees with vector coastlines even
+    though the data values themselves are fine. Sweeping a shift and re-scoring against
+    Natural Earth is how that offset was found and corrected there; this generalizes
+    the same check to any land/ocean-separable field (e.g. ETOPO05 topography).
+
+    Parameters
+    ----------
+    field : xr.DataArray on a regular lat/lon grid, land > land_thresh, ocean/missing
+            values <= land_thresh (e.g. raw elevation with negative or NaN ocean cells)
+    windows : dict of {name: (lon_min, lon_max, lat_min, lat_max)}, degrees matching
+              field's lon convention. Use several disjoint coastal sub-regions: a shift
+              that agrees across all of them is a global registration issue; a shift
+              that differs by window is local coastline-resolution disagreement, not a
+              registration bug.
+    land_thresh : threshold separating land from ocean/missing in `field`
+    resolution : Natural Earth polygon resolution ('110m', '50m', '10m')
+    max_shift_deg : search radius in degrees around zero shift
+
+    Returns
+    -------
+    dict of {window_name: (best_agreement_fraction, dlon, dlat)}
+    """
+    import cartopy.io.shapereader as shpreader
+    from shapely.ops import unary_union
+    try:
+        from shapely import contains_xy
+    except ImportError:
+        from shapely.vectorized import contains as _contains
+        def contains_xy(geom, x, y):
+            return _contains(geom, x, y)
+
+    shp = shpreader.natural_earth(resolution=resolution, category='physical', name='land')
+    land_union = unary_union(list(shpreader.Reader(shp).geometries()))
+
+    lon = field[lon_name].values
+    lat = field[lat_name].values
+    dlon = float(lon[1] - lon[0])
+    dlat = float(lat[1] - lat[0])
+    lon2d, lat2d = np.meshgrid(lon, lat)
+    lon2d_signed = ((lon2d + 180) % 360) - 180  # Natural Earth uses -180:180
+
+    field_land = np.asarray(field.values > land_thresh)
+
+    shifts_lon = np.arange(-max_shift_deg, max_shift_deg + dlon / 2, dlon)
+    shifts_lat = np.arange(-max_shift_deg, max_shift_deg + dlat / 2, dlat)
+
+    results = {}
+    for name, (lon_min, lon_max, lat_min, lat_max) in windows.items():
+        sub = ((lon2d >= lon_min) & (lon2d <= lon_max) &
+               (lat2d >= lat_min) & (lat2d <= lat_max))
+        sub_lon = lon2d_signed[sub]
+        sub_lat = lat2d[sub]
+        sub_field_land = field_land[sub]
+
+        best = (-1.0, 0.0, 0.0)
+        for slon in shifts_lon:
+            for slat in shifts_lat:
+                ref_land = contains_xy(land_union, sub_lon + slon, sub_lat + slat)
+                agree = np.mean(ref_land == sub_field_land)
+                if agree > best[0]:
+                    best = (agree, round(float(slon), 6), round(float(slat), 6))
+        results[name] = best
+
+    return results
