@@ -43,20 +43,33 @@ in `DATA_MANIFEST.csv` (the `group` column matches the section headings below).
 |---|---|---|
 | `obs.etopo5.zsurf.nc` | ETOPO5 observed | all FLOR notebooks, HRMIP, topography |
 
-> **Grid registration — pending measurement.** `topography_obs_models_comparisons.ipynb`
+> **Grid registration — checked, not the OIPC bug.** `topography_obs_models_comparisons.ipynb`
 > plots `obs.etopo5.zsurf.nc`'s topography against `ax.coastlines()` (Natural Earth vector
-> data) and the two disagree, the same failure mode documented for the OIPC isoscape in
-> `nam-dD-lig/analysis-repo/DATA_MANIFEST.md` under "OIPC grid registration": the file's
-> `ETOPO05_X`/`ETOPO05_Y` coordinate array is offset from the true lon/lat of each cell,
-> independent of anything cartopy draws. A diagnostic cell (using
-> `find_coastline_offset()` in `py_functions/data_funcs.py`) was added right after the
-> ETOPO05 load to measure the shift empirically — sweep a rigid lon/lat offset, score
-> agreement between the field's land mask and Natural Earth polygons, checked
-> independently over several coastal windows (Baja Pacific coast, Gulf of California,
-> Gulf of Mexico, Pacific NW) so a real global registration offset (same shift
-> everywhere) can be told apart from ordinary coastline-resolution disagreement (shift
-> differs by window). Not yet run on Discover — once it is, replace this note with the
-> measured shift, the agreement scores, and whether the correction was applied.
+> data), and it initially looked offset — the same symptom documented for the OIPC isoscape
+> in `nam-dD-lig/analysis-repo/DATA_MANIFEST.md` under "OIPC grid registration". Measured
+> with `find_coastline_offset()` (`py_functions/data_funcs.py`), which sweeps a rigid lon/lat
+> shift and scores agreement between the field's land mask and Natural Earth polygons,
+> independently over four coastal windows:
+>
+> | window | agreement | shift lon | shift lat |
+> |---|---|---|---|
+> | Baja Pacific coast | 0.983 | +0.0000 | −0.0000 |
+> | Gulf of California | 0.962 | +0.0000 | −0.0000 |
+> | Gulf of Mexico | 0.990 | +0.1667 | −0.0000 |
+> | Pacific NW | 0.991 | +0.0000 | −0.0000 |
+>
+> Three of four windows land on zero shift with 96–99% agreement — correctly-registered
+> data. Gulf of Mexico's +0.1667° is a lone outlier (that coast's low-lying deltas/barrier
+> islands are hard for ETOPO5 to resolve well); a real registration bug would show the same
+> shift everywhere, so this isn't one. **`ETOPO05_X`/`ETOPO05_Y` are not offset — no
+> coordinate correction applied.**
+>
+> The actual cause: this notebook's `ax.pcolormesh(field.lon, field.lat, field, ...)` calls
+> didn't pass `shading`. With coordinate arrays matching the data array's shape exactly,
+> matplotlib's legacy default drops the last row/column of data and treats the given lon/lat
+> as cell edges instead of centers — shifting the mesh by about half a grid cell (~0.04° at
+> ETOPO05's 5′ resolution), enough to look like a coastline mismatch on a regional map. Fixed
+> 2026-08-24 by adding `shading='auto'` to every topo `pcolormesh()` call in the notebook.
 
 ## FLOR experiments — `FLOR/{run}/{case}/` and `topo_files/`
 
