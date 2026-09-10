@@ -1,0 +1,87 @@
+group,full_path,product_or_variable,used_by
+obs_precip,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/obs_data/prec/imerg.gn.timeseries.2001-2018.nc,IMERG precip,"flor_pi, flor_2xCO2, HRMIP historical, HRMIP future"
+obs_precip,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/obs_data/prec/pr_TRMM-L3_v7-7A_199801-201312.nc,TRMM precip,"flor_pi, HRMIP historical, HRMIP future"
+obs_precip,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/obs_data/prec/gpcp.precip.1979-2018.monthly.nc,GPCP precip,"flor_pi, HRMIP historical"
+obs_precip,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/obs_data/prec/gpcc.precip.mon.rate.0.25x0.25.v2020.nc,GPCC precip,"flor_pi, HRMIP historical"
+obs_merra2,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/obs_data/merra2/merra2.U.1980-2022.monthly.nc,MERRA-2 U wind (lev 700/925),"700mb_psi, slp_gocllj"
+obs_merra2,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/obs_data/merra2/merra2.V.1980-2022.monthly.nc,MERRA-2 V wind (lev 700/925),"700mb_psi, slp_gocllj"
+obs_merra2,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/obs_data/merra2/merra2.H.1980-2022.monthly.nc,MERRA-2 geopotential height (lev 500/700),"500mb_geopotential, 700mb_psi"
+obs_merra2,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/obs_data/merra2/merra2.SLP.1980-2022.monthly.nc,MERRA-2 sea level pressure,slp_gocllj
+obs_topography,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/topo_files/obs.etopo5.zsurf.nc,ETOPO5 observed topography,"all FLOR notebooks, HRMIP, topography"
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.precip.monthly.nc,FLOR ctrl PI precip,"flor_pi, flor_2xCO2"
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/2xco2/flor.ctrl.2xco2.precip.monthly.nc,FLOR ctrl 2xCO2 precip,flor_2xCO2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.h500.monthly.nc,FLOR ctrl 500 hPa height,500mb_geopotential
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.h700.monthly.nc,FLOR ctrl 700 hPa height,700mb_psi
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.u700.monthly.nc,FLOR ctrl 700 hPa U wind,700mb_psi
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.v700.monthly.nc,FLOR ctrl 700 hPa V wind,700mb_psi
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.u925.monthly.nc,FLOR ctrl 925 hPa U wind,slp_gocllj
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.v925.monthly.nc,FLOR ctrl 925 hPa V wind,slp_gocllj
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.slp.monthly.nc,FLOR ctrl sea level pressure,slp_gocllj
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/topo_files/flor.ctrl.zsurf.nc,FLOR ctrl ZSURF topography,"all FLOR notebooks, topography"
+flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.precip.monthly.nc,FLOR hitopo PI precip,"flor_pi, flor_2xCO2"
+flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/2xco2/flor.hitopo.2xco2.precip.monthly.nc,FLOR hitopo 2xCO2 precip,flor_2xCO2
+flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.h500.monthly.nc,FLOR hitopo 500 hPa height,500mb_geopotential
+flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.h700.monthly.nc,FLOR hitopo 700 hPa height,700mb_psi
+flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.u700.monthly.nc,FLOR hitopo 700 hPa U wind,700mb_psi
+flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.v700.monthly.nc,FLOR hitopo 700 hPa V wind,700mb_psi
+flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.u925.monthly.nc,FLOR hitopo 925 hPa U wind,slp_gocllj
+flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.v925.monthly.nc,FLOR hitopo 925 hPa V wind,slp_gocllj
+flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.slp.monthly.nc,FLOR hitopo sea level pressure,slp_gocllj
+flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/topo_files/flor.hitopo.zsurf.nc,FLOR hitopo ZSURF topography,"all FLOR notebooks, topography"
+flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.precip.monthly.nc,FLOR hicam PI precip,flor_pi
+flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.h500.monthly.nc,FLOR hicam 500 hPa height,500mb_geopotential
+flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.h700.monthly.nc,FLOR hicam 700 hPa height,700mb_psi
+flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.u700.monthly.nc,FLOR hicam 700 hPa U wind,700mb_psi
+flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.v700.monthly.nc,FLOR hicam 700 hPa V wind,700mb_psi
+flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.u925.monthly.nc,FLOR hicam 925 hPa U wind,slp_gocllj
+flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.v925.monthly.nc,FLOR hicam 925 hPa V wind,slp_gocllj
+flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.slp.monthly.nc,FLOR hicam sea level pressure,slp_gocllj
+flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/topo_files/flor.hicam.zsurf.nc,FLOR cam ZSURF topography,"flor_pi, 700mb_psi, slp_gocllj, topography"
+flor_common,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/flor.land_mask.nc,FLOR land mask (shared by all runs),topography_comparisons
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.CAM-MPAS-LR.nc,HRMIP present pr (LR),"HRMIP historical, HRMIP future"
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.CAMS-CSM1-0-LR.nc,HRMIP present pr (LR),HRMIP historical
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.CMCC-CM2-HR4.nc,HRMIP present pr (LR),"HRMIP historical, HRMIP future"
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.CNRM-CM6-1.nc,HRMIP present pr (LR),HRMIP historical
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.ECMWF-IFS-LR.nc,HRMIP present pr (LR),HRMIP historical
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.FGOALS-f3-L.nc,HRMIP present pr (LR),"HRMIP historical, HRMIP future"
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.GFDL-CM4.nc,HRMIP present pr (LR),HRMIP historical
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.HadGEM3-GC31-LM.nc,HRMIP present pr (LR),"HRMIP historical, HRMIP future"
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.INM-CM5-0.nc,HRMIP present pr (LR),HRMIP historical
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.IPSL-CM6A-LR.nc,HRMIP present pr (LR),HRMIP historical
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.MPI-ESM1-2-LR.nc,HRMIP present pr (LR),HRMIP historical
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.MRI-ESM2-0.nc,HRMIP present pr (LR),HRMIP historical
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.CAM-MPAS-HR.nc,HRMIP present pr (HR),"HRMIP historical, HRMIP future"
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.CAMS-CSM1-0.nc,HRMIP present pr (HR),HRMIP historical
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.CMCC-CM2-VHR4.nc,HRMIP present pr (HR),"HRMIP historical, HRMIP future"
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.CNRM-CM6-1-HR.nc,HRMIP present pr (HR),HRMIP historical
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.EC-Earth3P.nc,HRMIP present pr (HR),"HRMIP historical, HRMIP future"
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.EC-Earth3P-HR.nc,HRMIP present pr (HR),"HRMIP historical, HRMIP future"
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.ECMWF-IFS-HR.nc,HRMIP present pr (HR),HRMIP historical
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.FGOALS-f3-H.nc,HRMIP present pr (HR),"HRMIP historical, HRMIP future"
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.GFDL-CM4C192.nc,HRMIP present pr (HR),HRMIP historical
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.HadGEM3-GC31-MM.nc,HRMIP present pr (HR),HRMIP historical
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.HadGEM3-GC31-HM.nc,HRMIP present pr (HR),"HRMIP historical, HRMIP future"
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.HiRAM-SIT-LR.nc,HRMIP present pr (HR),"HRMIP historical, HRMIP future"
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.HiRAM-SIT-HR.nc,HRMIP present pr (HR),"HRMIP historical, HRMIP future"
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.INM-CM5-H.nc,HRMIP present pr (HR),HRMIP historical
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.IPSL-CM6A-ATM-HR.nc,HRMIP present pr (HR),HRMIP historical
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.MPI-ESM1-2-HR.nc,HRMIP present pr (HR),"HRMIP historical, HRMIP future"
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.MPI-ESM1-2-XR.nc,HRMIP present pr (HR),"HRMIP historical, HRMIP future"
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.MRI-AGCM3-2-H.nc,HRMIP present pr (HR),HRMIP historical
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.MRI-AGCM3-2-S.nc,HRMIP present pr (HR),HRMIP historical
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.NICAM16-7S.nc,HRMIP present pr (HR),HRMIP historical
+hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.NICAM16-8S.nc,HRMIP present pr (HR),HRMIP historical
+hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-future/pr/pr.Amon.highresSST-future.CAM-MPAS-LR.nc,HRMIP future pr (LR),HRMIP future
+hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-future/pr/pr.Amon.highresSST-future.CMCC-CM2-HR4.nc,HRMIP future pr (LR),HRMIP future
+hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-future/pr/pr.Amon.highresSST-future.EC-Earth3P.nc,HRMIP future pr (LR),HRMIP future
+hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-future/pr/pr.Amon.highresSST-future.FGOALS-f3-L.nc,HRMIP future pr (LR),HRMIP future
+hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-future/pr/pr.Amon.highresSST-future.HadGEM3-GC31-LM.nc,HRMIP future pr (LR),HRMIP future
+hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-future/pr/pr.Amon.highresSST-future.HiRAM-SIT-LR.nc,HRMIP future pr (LR),HRMIP future
+hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-future/pr/pr.Amon.highresSST-future.MPI-ESM1-2-HR.nc,HRMIP future pr (LR),HRMIP future
+hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-future/pr/pr.Amon.highresSST-future.CAM-MPAS-HR.nc,HRMIP future pr (HR),HRMIP future
+hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-future/pr/pr.Amon.highresSST-future.CMCC-CM2-VHR4.nc,HRMIP future pr (HR),HRMIP future
+hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-future/pr/pr.Amon.highresSST-future.EC-Earth3P-HR.nc,HRMIP future pr (HR),HRMIP future
+hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-future/pr/pr.Amon.highresSST-future.FGOALS-f3-H.nc,HRMIP future pr (HR),HRMIP future
+hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-future/pr/pr.Amon.highresSST-future.HadGEM3-GC31-HM.nc,HRMIP future pr (HR),HRMIP future
+hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-future/pr/pr.Amon.highresSST-future.HiRAM-SIT-HR.nc,HRMIP future pr (HR),HRMIP future
+hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-future/pr/pr.Amon.highresSST-future.MPI-ESM1-2-XR.nc,HRMIP future pr (HR),HRMIP future
