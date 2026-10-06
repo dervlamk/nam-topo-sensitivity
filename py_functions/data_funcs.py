@@ -202,6 +202,8 @@ def conservative_regrid(da, lat, lon, min_coverage=0.5, lat_name='lat', lon_name
     t_lon = xr.DataArray(overlap(lon_out, lon_out, False).diagonal(), dims=['lon_out'])
 
     src = da.rename({lat_name: 'lat_in', lon_name: 'lon_in'}).drop_vars(['lat_in', 'lon_in'], errors='ignore')
+    if src.chunks is not None:  # core (spatial) dims must be single-chunk for apply_ufunc
+        src = src.chunk({'lat_in': -1, 'lon_in': -1})
     valid = src.notnull()
 
     def wsum(x):  # separable weights: (lat_out x lat_in) @ field @ (lon_in x lon_out)
