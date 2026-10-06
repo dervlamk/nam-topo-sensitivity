@@ -29,3 +29,23 @@ def wind_sig_mask(diff_mask_u, diff_mask_v):
     """
     both_sig = diff_mask_u.notnull() & diff_mask_v.notnull()
     return diff_mask_u.where(both_sig), diff_mask_v.where(both_sig)
+
+
+def sign_agreement(stack, dim='source_id'):
+    """Fraction of ensemble members whose sign matches the sign of the ensemble mean.
+
+    Parameters
+    ----------
+    stack : xr.DataArray
+        Ensemble of fields concatenated along `dim` (e.g. per-model precip biases).
+    dim : str
+        Ensemble dimension.
+
+    Returns
+    -------
+    xr.DataArray of agreement fractions in [0, 1]; NaN where the mean is NaN. Members
+    that are NaN at a point are excluded from the denominator.
+    """
+    mean_sign = np.sign(stack.mean(dim=dim))
+    agree = (np.sign(stack) == mean_sign).where(stack.notnull()).sum(dim=dim)
+    return agree / stack.notnull().sum(dim=dim).where(mean_sign.notnull())

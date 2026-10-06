@@ -153,6 +153,76 @@ def regrid_like(ref, var):
     var_regridded=var.interp_like(ref, method='linear')
     return(var_regridded)
 
+def _cell_edges(centers):
+    """Cell edges for a 1D rectilinear coordinate, placed at midpoints between centers
+    (outer edges extrapolated by half a grid step). Returns (lower, upper) arrays."""
+    c = np.asarray(centers, dtype=float)
+    mid = 0.5 * (c[1:] + c[:-1])
+    edges = np.concatenate([[c[0] - (mid[0] - c[0])], mid, [c[-1] + (c[-1] - mid[-1])]])
+    return np.minimum(edges[:-1], edges[1:]), np.maximum(edges[:-1], edges[1:])
+
+
+def conservative_regrid(da, lat, lon, min_coverage=0.5, lat_name='lat', lon_name='lon'):
+    """
+    First-order conservative (area-weighted) regridding of a regular lat/lon field
+    onto another regular lat/lon grid. Each target cell is the spherical-area-weighted
+    mean of the source cells overlapping it, so unlike bilinear interpolation it
+    represents the target cell's area mean when the source is finer than the target.
+
+    Source cells that are NaN (e.g. ocean in land-only products) are excluded and the
+    weights re-normalized over valid source area. Target cells for which less than
+    `min_coverage` of the cell area is covered by valid source data are set to NaN.
+    Both grids must be 1D, regular, and use the same longitude convention
+    (e.g. 0:360); any extra dimensions (time, year, ...) are preserved.
+
+    Parameters
+    ----------
+    da : xr.DataArray with dims including lat_name and lon_name
+    lat, lon : 1D target lat/lon values (array-like or DataArray)
+    min_coverage : minimum fraction (0-1) of a target cell covered by valid source data
+    """
+    lat_out = np.asarray(lat, dtype=float)
+    lon_out = np.asarray(lon, dtype=float)
+
+    def overlap(src, dst, spherical):
+        s_lo, s_hi = _cell_edges(src)
+        d_lo, d_hi = _cell_edges(dst)
+        if spherical:  # latitude bands: area proportional to difference in sin(lat)
+            f = lambda x: np.sin(np.deg2rad(np.clip(x, -90, 90)))
+        else:
+            f = lambda x: x
+        lo = np.maximum(d_lo[:, None], s_lo[None, :])
+        hi = np.minimum(d_hi[:, None], s_hi[None, :])
+        return np.clip(f(hi) - f(lo), 0, None)  # (n_dst, n_src)
+
+    w_lat = xr.DataArray(overlap(da[lat_name].values, lat_out, True), dims=['lat_out', 'lat_in'])
+    w_lon = xr.DataArray(overlap(da[lon_name].values, lon_out, False), dims=['lon_out', 'lon_in'])
+    # total area of each target cell, to measure how much of it the source covers
+    t_lat = xr.DataArray(overlap(lat_out, lat_out, True).diagonal(), dims=['lat_out'])
+    t_lon = xr.DataArray(overlap(lon_out, lon_out, False).diagonal(), dims=['lon_out'])
+
+    src = da.rename({lat_name: 'lat_in', lon_name: 'lon_in'}).drop_vars(['lat_in', 'lon_in'], errors='ignore')
+    valid = src.notnull()
+
+    def wsum(x):  # separable weights: (lat_out x lat_in) @ field @ (lon_in x lon_out)
+        return xr.apply_ufunc(
+            lambda f, wy, wx: wy @ f @ wx.T, x, w_lat, w_lon,
+            input_core_dims=[['lat_in', 'lon_in'], ['lat_out', 'lat_in'], ['lon_out', 'lon_in']],
+            output_core_dims=[['lat_out', 'lon_out']],
+            dask='parallelized', output_dtypes=[float],
+            dask_gufunc_kwargs={'output_sizes': {'lat_out': lat_out.size, 'lon_out': lon_out.size}},
+        )
+
+    num = wsum(src.fillna(0))
+    den = wsum(valid.astype(float))
+    out = (num / den).where(den >= min_coverage * (t_lat * t_lon))
+    out = out.rename({'lat_out': lat_name, 'lon_out': lon_name})
+    out = out.assign_coords({lat_name: lat_out, lon_name: lon_out})
+    out = out.transpose(*da.dims)
+    out.attrs = da.attrs
+    return out
+
+
 def lat_weighted_mean(var, lat_name='lat', lon_name='lon'):
     lats = var[lat_name]
     # determine weight based on latitude value
