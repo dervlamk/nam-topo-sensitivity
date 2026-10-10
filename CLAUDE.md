@@ -35,14 +35,12 @@ Pre-processed HRMIP climatology files are stored locally in `hrmip/` (excluded f
 
 ## Custom Functions
 
-Notebooks import shared utilities from a `py_functions/` directory. The import path varies by notebook:
-- Most notebooks (one level deep in `notebooks/`): `../py_functions/`
-- The main figure notebook `hrmip_historical_prec_biases_figs_2_s1.ipynb` uses `../../py_functions/`
+Notebooks import shared utilities from a `py_functions/` directory via `../py_functions/` (all notebooks are one level deep in `notebooks/`).
 
 Key modules:
 - `map_plot_tools.py` — `quick_map()` and other cartopy-based map helpers
 - `colorbar_funcs.py` — `get_settings(field, diff)` returns colormap, levels, norms
-- `data_funcs.py` — `lonFlip()` for converting longitude conventions (0:360 ↔ -180:180)
+- `data_funcs.py` — `lonFlip()` for converting longitude conventions (0:360 ↔ -180:180), `conservative_regrid()` for area-weighted regridding, `jas_seasonal_mean()`/`jas_yearly_mean()`
 - `stats_funcs.py` — `sigtest()` and `sigtest2n()` for Student's t-test significance masking
 
 ## Notebook Architecture
@@ -51,16 +49,17 @@ All analysis is in `notebooks/`. Figure outputs go to `figs/`.
 
 | Notebook | Purpose |
 |---|---|
-| `hrmip_historical_prec_biases_figs_2_s1.ipynb` | Main paper figures: HRMIP historical JAS precip biases vs. IMERG, including transect profiles and MME maps (Figs. 2 & S1) |
+| `HighResMIP_prec_historical_biases.ipynb` | Main paper figures: HRMIP historical JAS precip biases vs. IMERG, including transect profiles and MME maps (Figs. 2 & S1) |
+| `HighResMIP_prec_future_delta.ipynb` | HRMIP future (2030–2050) vs. historical precip change |
+| `cmip6_amip_jas_prec_bias_mme.ipynb` | CMIP6 vs. AMIP (coarse-resolution HighResMIP) MME JAS precip bias vs. IMERG |
 | `nam_precip_flor_pi.ipynb` | FLOR pre-industrial JAS precip bias and topography sensitivity |
 | `nam_precip_flor_2xCO2.ipynb` | FLOR 2xCO2 future precip change; ctrl vs. hitopo |
-| `nam_precip_hrmip_future.ipynb` | HRMIP future (2030–2050, 2040–2050) precip change |
-| `nam_synoptic.ipynb` | Synoptic-scale analysis |
-| `nam_winds.ipynb` | Wind field analysis |
-| `slp_flor_pi.ipynb` | Sea level pressure (FLOR PI) |
-| `slp_llj_flor.ipynb` | SLP and low-level jet analysis |
-| `qs_flor.ipynb` | Specific humidity (FLOR) |
-| `h850_ws850_flor.ipynb` | 850 hPa heights and wind speed |
+| `slp_gocllj_flor_pi.ipynb` | FLOR PI sea level pressure and Gulf of California low-level jet |
+| `500mb_geopotential_flor_pi.ipynb` | FLOR PI geopotential height and winds vs. MERRA-2 |
+| `700mb_psi_geopotential_winds_flor_pi.ipynb` | FLOR PI 700 hPa geopotential height, winds and streamfunction vs. MERRA-2 (Fig. 4) |
+| `sst_flor_pi.ipynb` | FLOR PI JAS SST bias vs. observations (data paths are placeholders) |
+| `topography_obs_models_comparisons.ipynb` | Model (FLOR, HighResMIP) vs. ETOPO05 topography (Fig. 1, S1, S5) |
+| `topo_resolution_schematic.ipynb` | Schematic of topography at coarse vs. ~50 km resolution |
 
 ### Common Analysis Pattern
 
@@ -68,7 +67,7 @@ All notebooks follow this structure:
 1. Import packages + custom functions
 2. Define data paths and load/pre-process datasets (units conversion: `* 86400` for mm/s→mm/day, `* 24` for mm/hr→mm/day; `lonFlip()` for FLOR output)
 3. Compute JAS seasonal means — use `jas_seasonal_mean()` (weighted by `days_in_month`) and `jas_yearly_mean()` (per-year means for significance testing)
-4. Regrid obs to model grid via `xr.DataArray.interp()`
+4. Regrid obs to model grid via `conservative_regrid()` (area-weighted)
 5. Significance testing via `sigtest2n()` or `sigtest()`
 6. Produce matplotlib/cartopy figures, save to `figs/` as both `.pdf` and `.png`
 
