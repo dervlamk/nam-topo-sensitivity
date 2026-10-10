@@ -67,7 +67,7 @@ All notebooks follow this structure:
 1. Import packages + custom functions
 2. Define data paths and load/pre-process datasets (units conversion: `* 86400` for mm/s→mm/day, `* 24` for mm/hr→mm/day; `lonFlip()` for FLOR output)
 3. Compute JAS seasonal means — use `jas_seasonal_mean()` (weighted by `days_in_month`) and `jas_yearly_mean()` (per-year means for significance testing)
-4. Regrid obs to model grid via `conservative_regrid()` (area-weighted)
+4. Regrid obs to model grid via `conservative_regrid()` (area-weighted); exception: `sst_flor_pi.ipynb` uses `xr.DataArray.interp()` (linear) because the SST obs are coarser than FLOR
 5. Significance testing via `sigtest2n()` or `sigtest()`
 6. Produce matplotlib/cartopy figures, save to `figs/` as both `.pdf` and `.png`
 
