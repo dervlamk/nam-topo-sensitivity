@@ -71,6 +71,17 @@ in `DATA_MANIFEST.csv` (the `group` column matches the section headings below).
 > ETOPO05's 5′ resolution), enough to look like a coastline mismatch on a regional map. Fixed
 > 2026-08-24 by adding `shading='auto'` to every topo `pcolormesh()` call in the notebook.
 
+### Observed SST — `obs_data/` (SI Fig. S2)
+
+| File | Product | Used by |
+|---|---|---|
+| `obs_data/hadisst.gn.timeseries.1870-2020.nc` | HadISST `sst`, years 1870–1970 used | sst_flor_pi |
+
+> **To confirm:** `sst_flor_pi.ipynb` still carries `# TODO: replace placeholder file names` and
+> `# TODO: name of the SST observational product`. The observed product (HadISST vs. OISST/ERSST)
+> and the FLOR SST file names (`flor.{run}.sst.nc`, variable `t_surf`, years 101–200) are
+> unconfirmed. Update this section and the CSV once the real files are known.
+
 ## FLOR experiments — `FLOR/{run}/{case}/` and `topo_files/`
 
 Each FLOR experiment is grouped together below with all of its variables and its
@@ -89,6 +100,7 @@ ZSURF topography boundary condition. Cases: `pi` (pre-industrial), `2xco2`.
 | `FLOR/ctrl/pi/flor.ctrl.u925.monthly.nc` | 925 hPa U wind | slp_gocllj |
 | `FLOR/ctrl/pi/flor.ctrl.v925.monthly.nc` | 925 hPa V wind | slp_gocllj |
 | `FLOR/ctrl/pi/flor.ctrl.slp.monthly.nc` | Sea level pressure | slp_gocllj |
+| `FLOR/ctrl/pi/flor.ctrl.sst.nc` | SST (`t_surf`) — **placeholder name, see SST section** | sst_flor_pi |
 | `topo_files/flor.ctrl.zsurf.nc` | ZSURF topography | all FLOR notebooks, topography |
 
 ### FLOR hitopo
@@ -104,6 +116,7 @@ ZSURF topography boundary condition. Cases: `pi` (pre-industrial), `2xco2`.
 | `FLOR/hitopo/pi/flor.hitopo.u925.monthly.nc` | 925 hPa U wind | slp_gocllj |
 | `FLOR/hitopo/pi/flor.hitopo.v925.monthly.nc` | 925 hPa V wind | slp_gocllj |
 | `FLOR/hitopo/pi/flor.hitopo.slp.monthly.nc` | Sea level pressure | slp_gocllj |
+| `FLOR/hitopo/pi/flor.hitopo.sst.nc` | SST (`t_surf`) — **placeholder name, see SST section** | sst_flor_pi |
 | `topo_files/flor.hitopo.zsurf.nc` | ZSURF topography | all FLOR notebooks, topography |
 
 ### FLOR hicam
@@ -118,17 +131,17 @@ ZSURF topography boundary condition. Cases: `pi` (pre-industrial), `2xco2`.
 | `FLOR/hicam/pi/flor.hicam.u925.monthly.nc` | 925 hPa U wind | slp_gocllj |
 | `FLOR/hicam/pi/flor.hicam.v925.monthly.nc` | 925 hPa V wind | slp_gocllj |
 | `FLOR/hicam/pi/flor.hicam.slp.monthly.nc` | Sea level pressure | slp_gocllj |
-| `topo_files/flor.hicam.zsurf.nc` | ZSURF topography | flor_pi, 700mb_psi, slp_gocllj, topography |
+| `FLOR/hicam/pi/flor.hicam.sst.nc` | SST (`t_surf`) — **placeholder name, see SST section** | sst_flor_pi |
+| `topo_files/flor.hicam.zsurf.nc` | ZSURF topography | flor_pi, 500mb_geopotential, 700mb_psi, slp_gocllj, topography |
 
-> **Verify:** `500mb_geopotential_flor_pi.ipynb` references `flor.cam.zsurf.nc`,
-> while every other notebook uses `flor.hicam.zsurf.nc`. These may be the same
-> file under two names, or one may be a typo — confirm before publishing.
+> `500mb_geopotential_flor_pi.ipynb` now also uses `flor.hicam.zsurf.nc`, like every other notebook
+> (an earlier `flor.cam.zsurf.nc` reference is gone).
 
 ### FLOR common
 
 | File | Variable | Used by |
 |---|---|---|
-| `FLOR/flor.land_mask.nc` | Land mask (shared by all runs) | topography_comparisons |
+| `FLOR/flor.land_mask.nc` | Land mask (shared by all runs) | topography_comparisons, sst_flor_pi |
 
 ## HighResMIP precipitation — `hrmip/{case}/pr/`
 
@@ -170,3 +183,23 @@ Used by `HighResMIP_prec_future_delta.ipynb` (7-model LR/HR paired subset):
 > The future-delta notebook also reads the matching `highresSST-present` files
 > for these same 7 model pairs (already listed above), so there are no
 > additional present-day files beyond those listed.
+
+## Additional inputs not yet recorded in the repository
+
+These are needed for items in the manuscript/response that have no (or only partial) code in this repo.
+
+- **Warming-rate plot** (`warming_rate.py`, untracked; response letter): takes two FLOR 2×CO₂ files containing
+  global-mean-able `t_ref` (CTRL and HI_gbl, years up to ~600; fits years 100–170 and 200–299) on the command
+  line. The file names are **not recorded anywhere** — add them here. Its default output name
+  (`figs/t_ref_warming_rate`) differs from the figure used (`flor_2xco2_t_ref_warming_rate.pdf`).
+- **SI Fig. S1** (study-region map): no notebook found.
+- **Table 1** (greenhouse-gas forcing): CMIP6 CO₂/CH₄/N₂O concentration files for historical (Meinshausen et
+  al. 2017) and SSP5-8.5 (Meinshausen et al. 2020); no script, files not recorded.
+- **SI Table S1** (HighResMIP grid spacing/institution): entered by hand.
+
+## Files read by notebooks but not used for any paper figure
+
+| File | Used by |
+|---|---|
+| `obs_data/prec/imerg.gissE2pt1_grid.nc` | cmip6_amip_jas_prec_bias_mme (savefig commented out) |
+| `hrmip/cmip6.pr.climo.nc` | cmip6_amip_jas_prec_bias_mme (savefig commented out) |

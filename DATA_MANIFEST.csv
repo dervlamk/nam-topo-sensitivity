@@ -85,3 +85,9 @@ hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresS
 hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-future/pr/pr.Amon.highresSST-future.HadGEM3-GC31-HM.nc,HRMIP future pr (HR),HRMIP future
 hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-future/pr/pr.Amon.highresSST-future.HiRAM-SIT-HR.nc,HRMIP future pr (HR),HRMIP future
 hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-future/pr/pr.Amon.highresSST-future.MPI-ESM1-2-XR.nc,HRMIP future pr (HR),HRMIP future
+obs_sst,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/obs_data/hadisst.gn.timeseries.1870-2020.nc,HadISST SST (placeholder name; confirm product),sst_flor_pi
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.sst.nc,FLOR ctrl SST (t_surf; placeholder name),sst_flor_pi
+flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.sst.nc,FLOR hitopo SST (t_surf; placeholder name),sst_flor_pi
+flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.sst.nc,FLOR hicam SST (t_surf; placeholder name),sst_flor_pi
+unused_by_paper_figures,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/obs_data/prec/imerg.gissE2pt1_grid.nc,IMERG regridded to GISS E2.1 grid,cmip6_amip_jas_prec_bias_mme (no saved figure)
+unused_by_paper_figures,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/cmip6.pr.climo.nc,CMIP6 precip climatology,cmip6_amip_jas_prec_bias_mme (no saved figure)
