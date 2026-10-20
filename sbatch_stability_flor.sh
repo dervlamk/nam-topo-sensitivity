@@ -14,6 +14,8 @@
 
 source /usr/share/modules/init/bash
 
+# batch shells don't read the `conda init` block in ~/.bashrc, so load conda's shell functions explicitly
+source /usr/local/other/anaconda/GEOSpyD/23.5.2-0_py3.11/2024-01-30/etc/profile.d/conda.sh
 conda activate nam_topo
 
 # run from the directory the job was submitted from (the repo root)
