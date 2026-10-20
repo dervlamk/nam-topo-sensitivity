@@ -6,20 +6,15 @@
 #SBATCH --time=02:00:00           # EDIT: untested on the real data, so start generous
 #SBATCH --error=logs/stability_flor_ctrl_pi_%j.err
 #SBATCH --output=logs/stability_flor_ctrl_pi_%j.out
-#SBATCH --qos=allnccs
-#SBATCH --account=s2689
+#SBATCH --account=s1001
 
 # Run the buoyancy-index (stability) analysis for FLOR ctrl PI.
-# Submit from the repo root:  mkdir -p logs && sbatch sbatch_stability_flor.sh
+# Submit from the repo root:  sbatch sbatch_stability_flor.sh
 # (slurm does not create the logs/ directory; the job fails silently if it is missing)
 
 source /usr/share/modules/init/bash
 
-# EDIT: load the Python environment used for the other notebooks (needs xarray, dask, cartopy,
-# metpy, cf_xarray, regionmask, scipy, netCDF4, cftime). Uncomment ONE style and fill in the name:
-# module load python/<version>
-# source activate <env_name>
-# conda activate <env_name>
+conda activate nam_topo
 
 # run from the directory the job was submitted from (the repo root)
 cd "${SLURM_SUBMIT_DIR}"
