@@ -203,9 +203,25 @@ These are needed for items in the manuscript/response that have no (or only part
   line. The file names are **not recorded anywhere** — add them here. Its default output name
   (`figs/t_ref_warming_rate`) differs from the figure used (`flor_2xco2_t_ref_warming_rate.pdf`).
 - **SI Fig. S1** (study-region map): no notebook found.
-- **Table 1** (greenhouse-gas forcing): CMIP6 CO₂/CH₄/N₂O concentration files for historical (Meinshausen et
-  al. 2017) and SSP5-8.5 (Meinshausen et al. 2020); no script, files not recorded.
+- **Table 1** (greenhouse-gas forcing): computed by `ghg_forcing.py` (repo root), which converts
+  interval-mean CO₂/CH₄/N₂O concentrations to forcing relative to 1750 with the NOAA AGGI Table 1
+  expressions (https://gml.noaa.gov/aggi/aggi.html; AGGI baselines 278.3 ppm / 729.2 ppb / 270.1 ppb;
+  halogens excluded). Inputs are listed in the next section. Reproduce Table 1 with
+  `python ghg_forcing.py 1950:1970 1950:1979 1950:2014` and
+  `python ghg_forcing.py 2015:2050 2021:2050 2030:2050 --experiment ssp585`.
 - **SI Table S1** (HighResMIP grid spacing/institution): entered by hand.
+
+## Greenhouse-gas concentration tables (Table 1) — **outside `dpath0`**
+
+Read by `ghg_forcing.py`; `DEFAULT_DATA_DIR` in that script is `/Users/dervlamk/data/cmip6` (a local
+directory, not on Discover) — change it or pass `--data-dir` on another machine.
+
+| File | Source | Used for |
+|---|---|---|
+| `Meinshausen2017_GHG-concentrations_1850-2014_CMIP6_historical.txt` | Meinshausen et al. (2017), historical | 1950–1970, 1950–1979, 1950–2014 |
+| `Meinshausen2020_CMIP6_ssp585_GHG.txt` | Meinshausen et al. (2020), SSP5-8.5, 2015–2500 | 2015–2050, 2021–2050, 2030–2050 |
+
+(`ghg_forcing.py` can also read the 1pctCO2 and SSP2-4.5 tables; those are not used for Table 1.)
 
 ## Files read by notebooks but not used for any paper figure
 
