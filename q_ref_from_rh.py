@@ -61,12 +61,39 @@ def specific_humidity_from_rh(RH, T, p):
     return w / (w + 1.0)
 
 
+def open_flor(path):
+    """Open a FLOR file with cftime-decoded (noleap) time; works on old and new xarray versions."""
+    try:
+        coder = xr.coders.CFDatetimeCoder(use_cftime=True)   # newer xarray (use_cftime kwarg is deprecated)
+        return xr.open_dataset(path, decode_times=coder, chunks={'time': 120})
+    except AttributeError:                                    # older xarray has no xr.coders
+        return xr.open_dataset(path, use_cftime=True, chunks={'time': 120})
+
+
+def describe_mismatch(dat):
+    """Describe how the time/space axes of the input variables differ (for the alignment error message)."""
+    lines = []
+    for v, da in dat.items():
+        t = da.time.values
+        lines.append(f"  {v:7s}: {da.sizes['time']} steps, {t[0]} to {t[-1]}, "
+                     f"grid {da.sizes.get('grid_yt')}x{da.sizes.get('grid_xt')}")
+    names = list(dat)
+    for other in names[1:]:
+        a, b = dat[names[0]], dat[other]
+        if a.sizes['time'] == b.sizes['time']:
+            same = bool((a.time.values == b.time.values).all())
+            lines.append(f"  {names[0]} vs {other}: same number of steps, identical time stamps: {same}")
+        else:
+            lines.append(f"  {names[0]} vs {other}: different number of time steps")
+    return '\n'.join(lines)
+
+
 def load(run, case, varn, start, end):
     """Open one variable, optionally restricted to years start..end (e.g. '0101', '0200')."""
     path = flor_file(run, case, varn)
     if not os.path.exists(path):
         sys.exit(f'Missing input file: {path}')
-    da = xr.open_dataset(path, use_cftime=True, chunks={'time': 120})[varn]
+    da = open_flor(path)[varn]
     if start is not None or end is not None:
         avail = f'{da.time.values[0]} to {da.time.values[-1]}'
         da = da.sel(time=slice(start, end))
@@ -103,7 +130,7 @@ def main():
     try:
         dat['rh_ref'], dat['t_ref'], dat['ps'] = xr.align(dat['rh_ref'], dat['t_ref'], dat['ps'], join='exact')
     except ValueError as err:
-        sys.exit(f'rh_ref, t_ref and ps do not share the same coordinates (check years/grids): {err}')
+        sys.exit(f'rh_ref, t_ref and ps do not share the same coordinates: {err}\n{describe_mismatch(dat)}')
     if dat['t_ref'].sizes['time'] == 0:
         sys.exit('No time steps selected; check --start/--end against the file time axes.')
 
