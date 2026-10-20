@@ -195,7 +195,7 @@ _z  = xr.DataArray(np.full((1,1,1,1), 1000.), dims=('time','plev','lat','lon'), 
 _tr = xr.DataArray(np.full((1,1,1), 300.), dims=('time','lat','lon'))
 _qr = qsat(_tr, 1e5)
 _zs = xr.DataArray(np.full((1,1), 1000.-Z_REF), dims=('lat','lon'))
-assert abs(float(buoyancy_index(_tr, _qr, _zs, _t, _z))) < 1e-6
+assert float(np.abs(buoyancy_index(_tr, _qr, _zs, _t, _z)).max()) < 1e-6   # .max() because the result is a (1,1,1,1) array
 print('All checks passed.')
 
 # ## Data paths
@@ -233,8 +233,11 @@ for run in runs:
 # --- sub-setting bounds --- #
 latmin, latmax = 10, 70
 lonmin, lonmax = 200, 300
-yr_min, yr_max = '0101', '0200' # PI years
+# years and figure directory can be overridden from the environment (used by sbatch_stability_flor_debug.sh)
+yr_min, yr_max = os.environ.get('STAB_YR_MIN', '0101'), os.environ.get('STAB_YR_MAX', '0200') # PI years
 yr_min_2x, yr_max_2x = '0200', '0299' # 2xCO2 years (CO2 held at 2x after doubling at ~yr 170)
+FIG_DIR = os.environ.get('STAB_FIG_DIR', '../figs')
+os.makedirs(FIG_DIR, exist_ok=True)
 plev_min = 20000.  # Pa, drop levels above 200 hPa -> this is only to save compute requirements, not done by Pascale et al. originally
 
 def load_var(path, varn, case, is_3d=False):
@@ -398,8 +401,8 @@ fields=[at_level(b_jas['ctrl']['pi'], l) for l in plot_levels]
 titles=[f'CTRL {l} hPa' for l in plot_levels]
 fig=level_maps(fields, None, titles, bvmin, bvmax, 21, r'JAS $b = h_{10m} - h^{*}$ [kJ kg$^{-1}$]')
 
-plt.savefig('../figs/b_flor_pi_baseline_maps.png', transparent=False, bbox_inches='tight')
-plt.savefig('../figs/b_flor_pi_baseline_maps.pdf', transparent=False, bbox_inches='tight')
+plt.savefig(FIG_DIR + '/b_flor_pi_baseline_maps.png', transparent=False, bbox_inches='tight')
+plt.savefig(FIG_DIR + '/b_flor_pi_baseline_maps.pdf', transparent=False, bbox_inches='tight')
 plt.close('all')
 
 # ### 2xCO$_2$$-$PI change in JAS buoyancy index $\Delta b$
@@ -411,8 +414,8 @@ if RUN_2XCO2:   # needs the 2xCO2 case
     titles=[f'CTRL {l} hPa' for l in plot_levels]
     fig=level_maps(fields, masks, titles, dvmin, dvmax, 21, r'2xCO$_2-$PI $\Delta b$ [kJ kg$^{-1}$]')
 
-    plt.savefig('../figs/b_flor_2xco2_delta_maps.png', transparent=False, bbox_inches='tight')
-    plt.savefig('../figs/b_flor_2xco2_delta_maps.pdf', transparent=False, bbox_inches='tight')
+    plt.savefig(FIG_DIR + '/b_flor_2xco2_delta_maps.png', transparent=False, bbox_inches='tight')
+    plt.savefig(FIG_DIR + '/b_flor_2xco2_delta_maps.pdf', transparent=False, bbox_inches='tight')
     plt.close('all')
 
 # --- HIgbl and HIgbl-CTRL panels (uncomment with hitopo) --- #
@@ -436,8 +439,8 @@ if RUN_2XCO2:   # needs the 2xCO2 case
     axs[0].invert_yaxis()
     axs[0].legend(fontsize=14)
 
-    plt.savefig('../figs/b_flor_2xco2_delta_profiles.png', transparent=False, bbox_inches='tight')
-    plt.savefig('../figs/b_flor_2xco2_delta_profiles.pdf', transparent=False, bbox_inches='tight')
+    plt.savefig(FIG_DIR + '/b_flor_2xco2_delta_profiles.png', transparent=False, bbox_inches='tight')
+    plt.savefig(FIG_DIR + '/b_flor_2xco2_delta_profiles.pdf', transparent=False, bbox_inches='tight')
     plt.close('all')
 
 # ### Longitude$-$pressure transect of $\Delta b$
@@ -471,8 +474,8 @@ if RUN_2XCO2:   # needs the 2xCO2 case
     cbar=fig.colorbar(cf, ax=axs, extend='both', ticks=np.linspace(dvmin, dvmax, 11), shrink=0.9)
     cbar.set_label(r'2xCO$_2-$PI $\Delta b$ [kJ kg$^{-1}$]', size=16)
 
-    plt.savefig('../figs/b_flor_2xco2_delta_transect.png', transparent=False, bbox_inches='tight')
-    plt.savefig('../figs/b_flor_2xco2_delta_transect.pdf', transparent=False, bbox_inches='tight')
+    plt.savefig(FIG_DIR + '/b_flor_2xco2_delta_transect.png', transparent=False, bbox_inches='tight')
+    plt.savefig(FIG_DIR + '/b_flor_2xco2_delta_transect.pdf', transparent=False, bbox_inches='tight')
     plt.close('all')
 
 # ## Convective mass flux (optional)
@@ -503,6 +506,6 @@ if RUN_MASSFLUX and RUN_2XCO2:
         ax.axvline(0, color='gray', lw=1); ax.set_title(dom, fontsize=20)
         ax.set_xlabel(f'2xCO$_2-$PI $\\Delta$ {MF_NAME} [{mf_jas[runs[0]]["pi"].attrs.get("units","")}]', fontsize=16)
     axs[0].set_ylabel('Pressure [hPa]', fontsize=16); axs[0].invert_yaxis(); axs[0].legend(fontsize=14)
-    plt.savefig('../figs/massflux_flor_2xco2_delta_profiles.png', transparent=False, bbox_inches='tight')
-    plt.savefig('../figs/massflux_flor_2xco2_delta_profiles.pdf', transparent=False, bbox_inches='tight')
+    plt.savefig(FIG_DIR + '/massflux_flor_2xco2_delta_profiles.png', transparent=False, bbox_inches='tight')
+    plt.savefig(FIG_DIR + '/massflux_flor_2xco2_delta_profiles.pdf', transparent=False, bbox_inches='tight')
     plt.close('all')
