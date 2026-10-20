@@ -206,7 +206,7 @@ cases=['pi']          # , '2xco2']   # <-- 2xco2 disabled for now (inputs not al
 RUN_2XCO2 = '2xco2' in cases   # gates every 2xCO2-dependent step below
 runs=['ctrl']             # , 'hitopo']   # <-- hitopo disabled for the first iteration; uncomment here and in the commented blocks below
 
-vars_3d=['temp','height']  # full pressure-level fields, CONFIRM file/variable names
+vars_3d=['temp','z_full']  # full pressure-level fields, CONFIRM file/variable names
 vars_2d=['t_ref','q_ref','ps']   # CONFIRM file/variable names (t_ref: see warming_rate.py)
 PLEV_NAME = 'pfull'        # name of the pressure-level dimension in the 3-D files, CONFIRM
 
@@ -235,7 +235,7 @@ latmin, latmax = 10, 70
 lonmin, lonmax = 200, 300
 yr_min, yr_max = '0101', '0200' # PI years
 yr_min_2x, yr_max_2x = '0200', '0299' # 2xCO2 years (CO2 held at 2x after doubling at ~yr 170)
-plev_min = 20000.  # Pa, drop levels above 200 hPa
+plev_min = 20000.  # Pa, drop levels above 200 hPa -> this is only to save compute requirements, not done by Pascale et al. originally
 
 def load_var(path, varn, case, is_3d=False):
     """Open one FLOR variable, select the case's years and JAS months (the only months used downstream),
