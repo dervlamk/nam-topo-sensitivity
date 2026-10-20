@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Convective stability (buoyancy index b = h_10m - h*) in FLOR: PI and 2xCO2.
 
-Script version of notebooks/stability_flor_pi_2xco2.ipynb. FLOR ctrl only; hitopo is commented out.
+Script version of notebooks/stability_flor_pi_2xco2.ipynb. FLOR ctrl PI only; hitopo and 2xco2 are disabled (see `runs`/`cases` below).
 Run from any directory: python notebooks/stability_flor_pi_2xco2.py   (figures go to ../figs relative to notebooks/)
 
 # Convective stability (buoyancy index) in FLOR: PI and 2xCO$_2$
@@ -12,7 +12,7 @@ $$b = h_{10\,\mathrm{m}} - h^{*}, \qquad h = c_p T + g z + L q, \qquad h_{10\,\m
 
 $h^*$ is the saturation moist static energy of the environment ($q \to q^*(T,p)$, August-Roche-Magnus). Since $c_p(T_c-T) = (h_c-h^*)/(1+\gamma)$ with $\gamma$ positive and O(1), $b$ is roughly twice the parcel buoyancy; $b>0$ means upward acceleration. $b$ is evaluated on pressure levels above the lifted condensation level (LCL) and we look at the anomaly $\Delta b$ between a perturbed and a control simulation.
 
-**Status of this iteration:** FLOR `ctrl` only (`pi` and `2xco2`). The `hitopo` run is written into the notebook but commented out.
+**Status of this iteration:** FLOR `ctrl`, `pi` case only. The `2xco2` case (`cases` / `RUN_2XCO2`) and the `hitopo` run are written into the script but disabled.
 
 ## Input files
 
@@ -202,7 +202,8 @@ print('All checks passed.')
 
 ### +++ DATA PATHS +++ ###
 
-cases=['pi','2xco2']
+cases=['pi']          # , '2xco2']   # <-- 2xco2 disabled for now (inputs not all available); uncomment to enable
+RUN_2XCO2 = '2xco2' in cases   # gates every 2xCO2-dependent step below
 runs=['ctrl']             # , 'hitopo']   # <-- hitopo disabled for the first iteration; uncomment here and in the commented blocks below
 
 vars_3d=['temp','height']  # full pressure-level fields, CONFIRM file/variable names
@@ -297,10 +298,12 @@ for key in runs:
         plcl_jas[key][case] = jas_seasonal_mean(pl).load()
         del b, pl
 
-# mask levels below the LCL (union of both cases)
+# mask levels below the LCL (union of both cases when 2xco2 is enabled)
 for key in runs:
     plev = b_jas[key]['pi'].plev
-    mask = below_lcl(plev, plcl_jas[key]['pi']) | below_lcl(plev, plcl_jas[key]['2xco2'])
+    mask = below_lcl(plev, plcl_jas[key]['pi'])
+    if RUN_2XCO2:
+        mask = mask | below_lcl(plev, plcl_jas[key]['2xco2'])
     for case in cases:
         b_jas[key][case] = b_jas[key][case].where(~mask)
         b_ann[key][case] = b_ann[key][case].where(~mask)
@@ -310,18 +313,19 @@ print('Done.')
 
 ## +++ COMPARING 2xCO2 TO PI +++ ##
 
-future_diff      = { 'ctrl':{} }   #, 'hitopo':{} }
-future_diff_mask = { 'ctrl':{} }   #, 'hitopo':{} }
-future_ptvals    = { 'ctrl':{} }   #, 'hitopo':{} }
+if RUN_2XCO2:   # needs the 2xCO2 case
+    future_diff      = { 'ctrl':{} }   #, 'hitopo':{} }
+    future_diff_mask = { 'ctrl':{} }   #, 'hitopo':{} }
+    future_ptvals    = { 'ctrl':{} }   #, 'hitopo':{} }
 
-print('Significance testing for:')
-for key in runs:
-    print(f'{key}')
-    diff_, diff_mask_, ptvals_ = sigtest2n(b_ann[key]['2xco2'], b_ann[key]['pi'],
-                                           b_jas[key]['2xco2'], b_jas[key]['pi'])
-    future_diff[key] = diff_
-    future_diff_mask[key] = diff_mask_
-    future_ptvals[key] = ptvals_
+    print('Significance testing for:')
+    for key in runs:
+        print(f'{key}')
+        diff_, diff_mask_, ptvals_ = sigtest2n(b_ann[key]['2xco2'], b_ann[key]['pi'],
+                                               b_jas[key]['2xco2'], b_jas[key]['pi'])
+        future_diff[key] = diff_
+        future_diff_mask[key] = diff_mask_
+        future_ptvals[key] = ptvals_
 
 # --- HIgbl - CTRL (uncomment together with 'hitopo' above) --- #
 # When hitopo is enabled, extend the LCL mask above to the union over ctrl AND hitopo so that
@@ -400,15 +404,16 @@ plt.close('all')
 
 # ### 2xCO$_2$$-$PI change in JAS buoyancy index $\Delta b$
 
-# --- 2xCO2 - PI Delta b maps (CTRL); stippling = NOT significant (p>0.1) --- #
-fields=[at_level(future_diff['ctrl'], l) for l in plot_levels]
-masks =[at_level(future_diff_mask['ctrl'], l) for l in plot_levels]
-titles=[f'CTRL {l} hPa' for l in plot_levels]
-fig=level_maps(fields, masks, titles, dvmin, dvmax, 21, r'2xCO$_2-$PI $\Delta b$ [kJ kg$^{-1}$]')
+if RUN_2XCO2:   # needs the 2xCO2 case
+    # --- 2xCO2 - PI Delta b maps (CTRL); stippling = NOT significant (p>0.1) --- #
+    fields=[at_level(future_diff['ctrl'], l) for l in plot_levels]
+    masks =[at_level(future_diff_mask['ctrl'], l) for l in plot_levels]
+    titles=[f'CTRL {l} hPa' for l in plot_levels]
+    fig=level_maps(fields, masks, titles, dvmin, dvmax, 21, r'2xCO$_2-$PI $\Delta b$ [kJ kg$^{-1}$]')
 
-plt.savefig('../figs/b_flor_2xco2_delta_maps.png', transparent=False, bbox_inches='tight')
-plt.savefig('../figs/b_flor_2xco2_delta_maps.pdf', transparent=False, bbox_inches='tight')
-plt.close('all')
+    plt.savefig('../figs/b_flor_2xco2_delta_maps.png', transparent=False, bbox_inches='tight')
+    plt.savefig('../figs/b_flor_2xco2_delta_maps.pdf', transparent=False, bbox_inches='tight')
+    plt.close('all')
 
 # --- HIgbl and HIgbl-CTRL panels (uncomment with hitopo) --- #
 # fields=[at_level(future_diff[r], l) for r in ['ctrl','hitopo'] for l in plot_levels]
@@ -416,57 +421,59 @@ plt.close('all')
 
 # ### Regional-mean $\Delta b$ profiles (NAM south/core and north domains)
 
-# --- area-weighted regional means of Delta b vs pressure --- #
-fig, axs = plt.subplots(nrows=1, ncols=len(domains), figsize=(6*len(domains),7), sharey=True, layout='constrained')
-for ax, dom in zip(np.atleast_1d(axs), domains):
-    for key, color in zip(runs, ['k', 'tab:blue']):   # ctrl, hitopo
-        prof = regional_weighted_mean(future_diff[key], regions).sel(region=dom) / 1000.
-        ax.plot(prof, prof.plev/100., color=color, lw=3, label=key.upper() if key=='ctrl' else r'HI$_{gbl}$')
-    ax.axvline(0, color='gray', lw=1)
-    ax.set_title(dom, fontsize=20)
-    ax.set_xlabel(r'2xCO$_2-$PI $\Delta b$ [kJ kg$^{-1}$]', fontsize=16)
-    ax.tick_params(labelsize=14)
-axs[0].set_ylabel('Pressure [hPa]', fontsize=16)
-axs[0].invert_yaxis()
-axs[0].legend(fontsize=14)
+if RUN_2XCO2:   # needs the 2xCO2 case
+    # --- area-weighted regional means of Delta b vs pressure --- #
+    fig, axs = plt.subplots(nrows=1, ncols=len(domains), figsize=(6*len(domains),7), sharey=True, layout='constrained')
+    for ax, dom in zip(np.atleast_1d(axs), domains):
+        for key, color in zip(runs, ['k', 'tab:blue']):   # ctrl, hitopo
+            prof = regional_weighted_mean(future_diff[key], regions).sel(region=dom) / 1000.
+            ax.plot(prof, prof.plev/100., color=color, lw=3, label=key.upper() if key=='ctrl' else r'HI$_{gbl}$')
+        ax.axvline(0, color='gray', lw=1)
+        ax.set_title(dom, fontsize=20)
+        ax.set_xlabel(r'2xCO$_2-$PI $\Delta b$ [kJ kg$^{-1}$]', fontsize=16)
+        ax.tick_params(labelsize=14)
+    axs[0].set_ylabel('Pressure [hPa]', fontsize=16)
+    axs[0].invert_yaxis()
+    axs[0].legend(fontsize=14)
 
-plt.savefig('../figs/b_flor_2xco2_delta_profiles.png', transparent=False, bbox_inches='tight')
-plt.savefig('../figs/b_flor_2xco2_delta_profiles.pdf', transparent=False, bbox_inches='tight')
-plt.close('all')
+    plt.savefig('../figs/b_flor_2xco2_delta_profiles.png', transparent=False, bbox_inches='tight')
+    plt.savefig('../figs/b_flor_2xco2_delta_profiles.pdf', transparent=False, bbox_inches='tight')
+    plt.close('all')
 
 # ### Longitude$-$pressure transect of $\Delta b$
 
-# --- transect: latitude-band mean, longitude vs pressure --- #
-tr_lat = (22, 32)       # degN band averaged
-tr_lon = (240, 265)     # degE extent shown
+if RUN_2XCO2:   # needs the 2xCO2 case
+    # --- transect: latitude-band mean, longitude vs pressure --- #
+    tr_lat = (22, 32)       # degN band averaged
+    tr_lon = (240, 265)     # degE extent shown
 
-def band_mean(da):
-    return da.sel(lat=slice(*tr_lat), lon=slice(*tr_lon)).mean('lat')
+    def band_mean(da):
+        return da.sel(lat=slice(*tr_lat), lon=slice(*tr_lon)).mean('lat')
 
-tr_diff={}; tr_mask={}
-for key in runs:
-    tr_diff[key], tr_mask[key], _ = sigtest2n(band_mean(b_ann[key]['2xco2']), band_mean(b_ann[key]['pi']),
-                                                 band_mean(b_jas[key]['2xco2']), band_mean(b_jas[key]['pi']))
+    tr_diff={}; tr_mask={}
+    for key in runs:
+        tr_diff[key], tr_mask[key], _ = sigtest2n(band_mean(b_ann[key]['2xco2']), band_mean(b_ann[key]['pi']),
+                                                     band_mean(b_jas[key]['2xco2']), band_mean(b_jas[key]['pi']))
 
-norm=mpl.colors.BoundaryNorm(np.linspace(dvmin, dvmax, 21), cmap.N)
-fig, axs = plt.subplots(nrows=1, ncols=len(runs), figsize=(9*len(runs),7), sharey=True, layout='constrained', squeeze=False)
-for ax, key in zip(axs[0], runs):
-    d = tr_diff[key]/1000.
-    cf = ax.pcolormesh(d.lon, d.plev/100., d, cmap=cmap, norm=norm)
-    lon2d, p2d = np.meshgrid(d.lon, d.plev/100.)
-    ns = tr_mask[key].isnull().values
-    ax.scatter(lon2d[ns], p2d[ns], s=25, c='k', marker='.', linewidths=0, zorder=100)
-    ax.set_title(key.upper(), fontsize=20)
-    ax.set_xlabel('Longitude [$^\\circ$E]', fontsize=16)
-    ax.tick_params(labelsize=14)
-axs[0,0].set_ylabel('Pressure [hPa]', fontsize=16)
-axs[0,0].invert_yaxis()
-cbar=fig.colorbar(cf, ax=axs, extend='both', ticks=np.linspace(dvmin, dvmax, 11), shrink=0.9)
-cbar.set_label(r'2xCO$_2-$PI $\Delta b$ [kJ kg$^{-1}$]', size=16)
+    norm=mpl.colors.BoundaryNorm(np.linspace(dvmin, dvmax, 21), cmap.N)
+    fig, axs = plt.subplots(nrows=1, ncols=len(runs), figsize=(9*len(runs),7), sharey=True, layout='constrained', squeeze=False)
+    for ax, key in zip(axs[0], runs):
+        d = tr_diff[key]/1000.
+        cf = ax.pcolormesh(d.lon, d.plev/100., d, cmap=cmap, norm=norm)
+        lon2d, p2d = np.meshgrid(d.lon, d.plev/100.)
+        ns = tr_mask[key].isnull().values
+        ax.scatter(lon2d[ns], p2d[ns], s=25, c='k', marker='.', linewidths=0, zorder=100)
+        ax.set_title(key.upper(), fontsize=20)
+        ax.set_xlabel('Longitude [$^\\circ$E]', fontsize=16)
+        ax.tick_params(labelsize=14)
+    axs[0,0].set_ylabel('Pressure [hPa]', fontsize=16)
+    axs[0,0].invert_yaxis()
+    cbar=fig.colorbar(cf, ax=axs, extend='both', ticks=np.linspace(dvmin, dvmax, 11), shrink=0.9)
+    cbar.set_label(r'2xCO$_2-$PI $\Delta b$ [kJ kg$^{-1}$]', size=16)
 
-plt.savefig('../figs/b_flor_2xco2_delta_transect.png', transparent=False, bbox_inches='tight')
-plt.savefig('../figs/b_flor_2xco2_delta_transect.pdf', transparent=False, bbox_inches='tight')
-plt.close('all')
+    plt.savefig('../figs/b_flor_2xco2_delta_transect.png', transparent=False, bbox_inches='tight')
+    plt.savefig('../figs/b_flor_2xco2_delta_transect.pdf', transparent=False, bbox_inches='tight')
+    plt.close('all')
 
 # ## Convective mass flux (optional)
 #
@@ -475,7 +482,7 @@ plt.close('all')
 RUN_MASSFLUX = False
 MF_NAME = 'mc_full'       # CONFIRM: variable (and file tag) of the diagnosed convective mass flux, on pressure levels
 
-if RUN_MASSFLUX:
+if RUN_MASSFLUX and RUN_2XCO2:
     mf_jas, mf_ann = {}, {}
     for key in runs:
         mf_jas[key], mf_ann[key] = {}, {}
