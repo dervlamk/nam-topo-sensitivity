@@ -55,6 +55,7 @@ All analysis is in `notebooks/`. Figure outputs go to `figs/`.
 | `nam_precip_flor_pi.ipynb` | FLOR pre-industrial JAS precip bias and topography sensitivity |
 | `nam_precip_flor_2xCO2.ipynb` | FLOR 2xCO2 future precip change; ctrl vs. hitopo |
 | `slp_gocllj_flor_pi.ipynb` | FLOR PI sea level pressure and Gulf of California low-level jet |
+| `stability_flor_pi_2xco2.ipynb` | FLOR PI and 2xCO2 convective stability: buoyancy index b = h_10m − h* (thermodynamic functions defined inline); ctrl only, hitopo commented out |
 | `500mb_geopotential_flor_pi.ipynb` | FLOR PI geopotential height and winds vs. MERRA-2 |
 | `700mb_psi_geopotential_winds_flor_pi.ipynb` | FLOR PI 700 hPa geopotential height, winds and streamfunction vs. MERRA-2 (Fig. 4) |
 | `sst_flor_pi.ipynb` | FLOR PI JAS SST bias vs. observations (data paths are placeholders) |

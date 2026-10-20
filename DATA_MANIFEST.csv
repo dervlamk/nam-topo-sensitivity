@@ -17,7 +17,17 @@ flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor
 flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.u925.monthly.nc,FLOR ctrl 925 hPa U wind,slp_gocllj
 flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.v925.monthly.nc,FLOR ctrl 925 hPa V wind,slp_gocllj
 flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.slp.monthly.nc,FLOR ctrl sea level pressure,slp_gocllj
-flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/topo_files/flor.ctrl.zsurf.nc,FLOR ctrl ZSURF topography,"all FLOR notebooks, topography"
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.temp.monthly.nc,FLOR ctrl pi 3D temperature (file name assumed),stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.height.monthly.nc,FLOR ctrl pi 3D height (file name assumed),stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.t_ref.monthly.nc,FLOR ctrl pi Reference-height temperature (file name assumed),stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.q_ref.monthly.nc,FLOR ctrl pi Reference-height specific humidity (file name assumed),stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.ps.monthly.nc,FLOR ctrl pi Surface pressure (file name assumed),stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/2xco2/flor.ctrl.2xco2.temp.monthly.nc,FLOR ctrl 2xco2 3D temperature (file name assumed),stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/2xco2/flor.ctrl.2xco2.height.monthly.nc,FLOR ctrl 2xco2 3D height (file name assumed),stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/2xco2/flor.ctrl.2xco2.t_ref.monthly.nc,FLOR ctrl 2xco2 Reference-height temperature (file name assumed),stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/2xco2/flor.ctrl.2xco2.q_ref.monthly.nc,FLOR ctrl 2xco2 Reference-height specific humidity (file name assumed),stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/2xco2/flor.ctrl.2xco2.ps.monthly.nc,FLOR ctrl 2xco2 Surface pressure (file name assumed),stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/topo_files/flor.ctrl.zsurf.nc,FLOR ctrl ZSURF topography,"all FLOR notebooks, topography, stability_flor_pi_2xco2"
 flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.precip.monthly.nc,FLOR hitopo PI precip,"flor_pi, flor_2xCO2"
 flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/2xco2/flor.hitopo.2xco2.precip.monthly.nc,FLOR hitopo 2xCO2 precip,flor_2xCO2
 flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.h500.monthly.nc,FLOR hitopo 500 hPa height,500mb_geopotential

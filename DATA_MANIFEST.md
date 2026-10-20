@@ -101,7 +101,17 @@ ZSURF topography boundary condition. Cases: `pi` (pre-industrial), `2xco2`.
 | `FLOR/ctrl/pi/flor.ctrl.v925.monthly.nc` | 925 hPa V wind | slp_gocllj |
 | `FLOR/ctrl/pi/flor.ctrl.slp.monthly.nc` | Sea level pressure | slp_gocllj |
 | `FLOR/ctrl/pi/flor.ctrl.sst.nc` | SST (`t_surf`) — **placeholder name, see SST section** | sst_flor_pi |
-| `topo_files/flor.ctrl.zsurf.nc` | ZSURF topography | all FLOR notebooks, topography |
+| `FLOR/ctrl/pi/flor.ctrl.temp.monthly.nc` | 3D temperature (pi) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
+| `FLOR/ctrl/pi/flor.ctrl.height.monthly.nc` | 3D height (pi) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
+| `FLOR/ctrl/pi/flor.ctrl.t_ref.monthly.nc` | Reference-height temperature (pi) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
+| `FLOR/ctrl/pi/flor.ctrl.q_ref.monthly.nc` | Reference-height specific humidity (pi) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
+| `FLOR/ctrl/pi/flor.ctrl.ps.monthly.nc` | Surface pressure (pi) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
+| `FLOR/ctrl/2xco2/flor.ctrl.2xco2.temp.monthly.nc` | 3D temperature (2xco2) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
+| `FLOR/ctrl/2xco2/flor.ctrl.2xco2.height.monthly.nc` | 3D height (2xco2) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
+| `FLOR/ctrl/2xco2/flor.ctrl.2xco2.t_ref.monthly.nc` | Reference-height temperature (2xco2) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
+| `FLOR/ctrl/2xco2/flor.ctrl.2xco2.q_ref.monthly.nc` | Reference-height specific humidity (2xco2) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
+| `FLOR/ctrl/2xco2/flor.ctrl.2xco2.ps.monthly.nc` | Surface pressure (2xco2) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
+| `topo_files/flor.ctrl.zsurf.nc` | ZSURF topography | all FLOR notebooks, topography, stability_flor_pi_2xco2 |
 
 ### FLOR hitopo
 
