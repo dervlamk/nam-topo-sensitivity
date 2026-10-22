@@ -7,6 +7,7 @@ obs_merra2,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/obs_data/merra2/
 obs_merra2,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/obs_data/merra2/merra2.V.1980-2022.monthly.nc,MERRA-2 V wind (lev 700/925),"700mb_psi, slp_gocllj"
 obs_merra2,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/obs_data/merra2/merra2.H.1980-2022.monthly.nc,MERRA-2 geopotential height (lev 500/700),"500mb_geopotential, 700mb_psi"
 obs_merra2,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/obs_data/merra2/merra2.SLP.1980-2022.monthly.nc,MERRA-2 sea level pressure,slp_gocllj
+obs_sst,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/obs_data/hadisst.gn.timeseries.1870-2020.nc,HadISST SST,sst_flor_pi
 obs_topography,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/topo_files/obs.etopo5.zsurf.nc,ETOPO5 observed topography,"all FLOR notebooks, HRMIP, topography"
 flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.precip.monthly.nc,FLOR ctrl PI precip,"flor_pi, flor_2xCO2"
 flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/2xco2/flor.ctrl.2xco2.precip.monthly.nc,FLOR ctrl 2xCO2 precip,flor_2xCO2
@@ -17,16 +18,17 @@ flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor
 flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.u925.monthly.nc,FLOR ctrl 925 hPa U wind,slp_gocllj
 flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.v925.monthly.nc,FLOR ctrl 925 hPa V wind,slp_gocllj
 flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.slp.monthly.nc,FLOR ctrl sea level pressure,slp_gocllj
-flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.temp.monthly.nc,FLOR ctrl pi 3D temperature (file name assumed),stability_flor_pi_2xco2
-flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.height.monthly.nc,FLOR ctrl pi 3D height (file name assumed),stability_flor_pi_2xco2
-flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.t_ref.monthly.nc,FLOR ctrl pi Reference-height temperature (file name assumed),stability_flor_pi_2xco2
-flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.q_ref.monthly.nc,FLOR ctrl pi Reference-height specific humidity (file name assumed),stability_flor_pi_2xco2
-flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.ps.monthly.nc,FLOR ctrl pi Surface pressure (file name assumed),stability_flor_pi_2xco2
-flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/2xco2/flor.ctrl.2xco2.temp.monthly.nc,FLOR ctrl 2xco2 3D temperature (file name assumed),stability_flor_pi_2xco2
-flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/2xco2/flor.ctrl.2xco2.height.monthly.nc,FLOR ctrl 2xco2 3D height (file name assumed),stability_flor_pi_2xco2
-flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/2xco2/flor.ctrl.2xco2.t_ref.monthly.nc,FLOR ctrl 2xco2 Reference-height temperature (file name assumed),stability_flor_pi_2xco2
-flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/2xco2/flor.ctrl.2xco2.q_ref.monthly.nc,FLOR ctrl 2xco2 Reference-height specific humidity (file name assumed),stability_flor_pi_2xco2
-flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/2xco2/flor.ctrl.2xco2.ps.monthly.nc,FLOR ctrl 2xco2 Surface pressure (file name assumed),stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.temp.monthly.nc,FLOR ctrl pi 3D temperature,stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.z_full.monthly.nc,FLOR ctrl pi 3D geopotential height,stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.t_ref.monthly.nc,FLOR ctrl pi Reference-height temperature,stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.q_ref.monthly.nc,FLOR ctrl pi Reference-height specific humidity,stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.ps.monthly.nc,FLOR ctrl pi Surface pressure,stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/2xco2/flor.ctrl.2xco2.temp.monthly.nc,FLOR ctrl 2xco2 3D temperature,stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/2xco2/flor.ctrl.2xco2.height.monthly.nc,FLOR ctrl 2xco2 3D geopotential height,stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/2xco2/flor.ctrl.2xco2.t_ref.monthly.nc,FLOR ctrl 2xco2 Reference-height temperature,stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/2xco2/flor.ctrl.2xco2.q_ref.monthly.nc,FLOR ctrl 2xco2 Reference-height specific humidity,stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/2xco2/flor.ctrl.2xco2.ps.monthly.nc,FLOR ctrl 2xco2 Surface pressure,stability_flor_pi_2xco2
+flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.sst.nc,FLOR ctrl SST (t_surf; placeholder name),sst_flor_pi
 flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/topo_files/flor.ctrl.zsurf.nc,FLOR ctrl ZSURF topography,"all FLOR notebooks, topography, stability_flor_pi_2xco2"
 flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.precip.monthly.nc,FLOR hitopo PI precip,"flor_pi, flor_2xCO2"
 flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/2xco2/flor.hitopo.2xco2.precip.monthly.nc,FLOR hitopo 2xCO2 precip,flor_2xCO2
@@ -37,6 +39,7 @@ flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/
 flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.u925.monthly.nc,FLOR hitopo 925 hPa U wind,slp_gocllj
 flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.v925.monthly.nc,FLOR hitopo 925 hPa V wind,slp_gocllj
 flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.slp.monthly.nc,FLOR hitopo sea level pressure,slp_gocllj
+flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.sst.nc,FLOR hitopo SST (t_surf; placeholder name),sst_flor_pi
 flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/topo_files/flor.hitopo.zsurf.nc,FLOR hitopo ZSURF topography,"all FLOR notebooks, topography"
 flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.precip.monthly.nc,FLOR hicam PI precip,flor_pi
 flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.h500.monthly.nc,FLOR hicam 500 hPa height,500mb_geopotential
@@ -46,6 +49,7 @@ flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/fl
 flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.u925.monthly.nc,FLOR hicam 925 hPa U wind,slp_gocllj
 flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.v925.monthly.nc,FLOR hicam 925 hPa V wind,slp_gocllj
 flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.slp.monthly.nc,FLOR hicam sea level pressure,slp_gocllj
+flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.sst.nc,FLOR hicam SST (t_surf; placeholder name),sst_flor_pi
 flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/topo_files/flor.hicam.zsurf.nc,FLOR cam ZSURF topography,"flor_pi, 700mb_psi, slp_gocllj, topography"
 flor_common,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/flor.land_mask.nc,FLOR land mask (shared by all runs),topography_comparisons
 hrmip_present,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-present/pr/pr.Amon.highresSST-present.CAM-MPAS-LR.nc,HRMIP present pr (LR),"HRMIP historical, HRMIP future"
@@ -95,10 +99,6 @@ hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresS
 hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-future/pr/pr.Amon.highresSST-future.HadGEM3-GC31-HM.nc,HRMIP future pr (HR),HRMIP future
 hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-future/pr/pr.Amon.highresSST-future.HiRAM-SIT-HR.nc,HRMIP future pr (HR),HRMIP future
 hrmip_future,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/highresSST-future/pr/pr.Amon.highresSST-future.MPI-ESM1-2-XR.nc,HRMIP future pr (HR),HRMIP future
-obs_sst,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/obs_data/hadisst.gn.timeseries.1870-2020.nc,HadISST SST (placeholder name; confirm product),sst_flor_pi
-flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/ctrl/pi/flor.ctrl.sst.nc,FLOR ctrl SST (t_surf; placeholder name),sst_flor_pi
-flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.sst.nc,FLOR hitopo SST (t_surf; placeholder name),sst_flor_pi
-flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.sst.nc,FLOR hicam SST (t_surf; placeholder name),sst_flor_pi
 unused_by_paper_figures,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/obs_data/prec/imerg.gissE2pt1_grid.nc,IMERG regridded to GISS E2.1 grid,cmip6_amip_jas_prec_bias_mme (no saved figure)
 unused_by_paper_figures,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/hrmip/cmip6.pr.climo.nc,CMIP6 precip climatology,cmip6_amip_jas_prec_bias_mme (no saved figure)
 ghg_forcing,/Users/dervlamk/data/cmip6/Meinshausen2017_GHG-concentrations_1850-2014_CMIP6_historical.txt,CMIP6 historical GHG concentrations (Meinshausen 2017),ghg_forcing.py (Table 1)
