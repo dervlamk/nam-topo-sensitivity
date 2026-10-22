@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Convective stability (buoyancy index b = h_10m - h*) in FLOR: PI and 2xCO2.
 
-Script version of notebooks/stability_flor_pi_2xco2.ipynb. FLOR ctrl PI only; hitopo and 2xco2 are disabled (see `runs`/`cases` below).
+Script version of notebooks/stability_flor_pi_2xco2.ipynb. FLOR ctrl and hitopo, PI and 2xco2 (see `runs`/`cases` below).
 Run from any directory: python notebooks/stability_flor_pi_2xco2.py   (figures go to ../figs relative to notebooks/)
 
 # Convective stability (buoyancy index) in FLOR: PI and 2xCO$_2$
@@ -12,7 +12,7 @@ $$b = h_{10\,\mathrm{m}} - h^{*}, \qquad h = c_p T + g z + L q, \qquad h_{10\,\m
 
 $h^*$ is the saturation moist static energy of the environment ($q \to q^*(T,p)$, August-Roche-Magnus). Since $c_p(T_c-T) = (h_c-h^*)/(1+\gamma)$ with $\gamma$ positive and O(1), $b$ is roughly twice the parcel buoyancy; $b>0$ means upward acceleration. $b$ is evaluated on pressure levels above the lifted condensation level (LCL) and we look at the anomaly $\Delta b$ between a perturbed and a control simulation.
 
-**Status of this iteration:** FLOR `ctrl`, `pi` case only. The `2xco2` case (`cases` / `RUN_2XCO2`) and the `hitopo` run are written into the script but disabled.
+**Status of this iteration:** FLOR `ctrl` and `hitopo` (HIgbl), `pi` and `2xco2` cases (`runs` / `cases`). Setting `cases = ['pi']` or `runs = ['ctrl']` runs a subset; the 2xCO2 and hitopo steps are gated on `RUN_2XCO2` / `RUN_HITOPO`.
 
 ## Input files
 
@@ -202,25 +202,36 @@ print('All checks passed.')
 
 ### +++ DATA PATHS +++ ###
 
-cases=['pi']          # , '2xco2']   # <-- 2xco2 disabled for now (inputs not all available); uncomment to enable
+cases=['pi','2xco2']   # drop '2xco2' to run PI only
 RUN_2XCO2 = '2xco2' in cases   # gates every 2xCO2-dependent step below
-runs=['ctrl']             # , 'hitopo']   # <-- hitopo disabled for the first iteration; uncomment here and in the commented blocks below
+RUN_HITOPO = False             # also run FLOR hitopo (HIgbl) and the HIgbl-CTRL comparison
+runs=['ctrl','hitopo'] if RUN_HITOPO else ['ctrl']
+RUN_LABEL = {'ctrl':'CTRL', 'hitopo':r'HI$_{gbl}$'}   # plot labels
 
 vars_3d=['temp','z_full']  # full pressure-level fields, CONFIRM file/variable names
 vars_2d=['t_ref','q_ref','ps']   # CONFIRM file/variable names (t_ref: see warming_rate.py)
 PLEV_NAME = 'pfull'        # name of the pressure-level dimension in the 3-D files, CONFIRM
 
 files={ 'ctrl':   { 'pi':{}, '2xco2':{} },
-        #'hitopo': { 'pi':{}, '2xco2':{} }
+        'hitopo': { 'pi':{}, '2xco2':{} }
       }
+
+Q_REF_YEARS = {'pi':('0101','0200'), '2xco2':('0200','0299')}   # periods of the year-tagged q_ref files made by q_ref_from_rh.py
+
+def flor_path(key, case, varn):
+    """Monthly FLOR file. q_ref: the year-tagged file from q_ref_from_rh.py if it exists, else the untagged name."""
+    tag = f'flor.{key}' if case=='pi' else f'flor.{key}.{case}'
+    if varn=='q_ref':
+        tagged = f'{dpath0}/FLOR/{key}/{case}/{tag}.q_ref.{"-".join(Q_REF_YEARS[case])}.monthly.nc'
+        if os.path.exists(tagged):
+            return tagged
+    return f'{dpath0}/FLOR/{key}/{case}/{tag}.{varn}.monthly.nc'
 
 for key in runs:
     for case in cases:
         for varn in vars_3d+vars_2d:
-            if case=='pi':
-                files[key][case][varn] = f'{dpath0}/FLOR/{key}/{case}/flor.{key}.{varn}.monthly.nc'
-            elif case=='2xco2':
-                files[key][case][varn] = f'{dpath0}/FLOR/{key}/{case}/flor.{key}.{case}.{varn}.monthly.nc'
+            files[key][case][varn] = flor_path(key, case, varn)
+        print(f'{key} {case} q_ref file: {files[key][case]["q_ref"]}')
 
 files['topo'] = {}
 for run in runs:
@@ -259,7 +270,7 @@ def load_var(path, varn, case, is_3d=False):
     return ds.sel(lon=slice(lonmin,lonmax), lat=slice(latmin,latmax)).astype('float32')
 
 dat={ 'ctrl':   { 'pi':{}, '2xco2':{} },
-      #'hitopo': { 'pi':{}, '2xco2':{} }
+      'hitopo': { 'pi':{}, '2xco2':{} }
     }
 
 print('Working on...')
@@ -285,9 +296,9 @@ print('Done.')
 
 ### +++ BUOYANCY INDEX AND SEASONAL MEANS +++ ###
 
-b_jas     = { 'ctrl':{ 'pi':{}, '2xco2':{} } }   #, 'hitopo':{ 'pi':{}, '2xco2':{} } }
-b_ann     = { 'ctrl':{ 'pi':{}, '2xco2':{} } }   #, 'hitopo':{ 'pi':{}, '2xco2':{} } }
-plcl_jas  = { 'ctrl':{ 'pi':{}, '2xco2':{} } }   #, 'hitopo':{ 'pi':{}, '2xco2':{} } }
+b_jas     = { key:{ 'pi':{}, '2xco2':{} } for key in runs }
+b_ann     = { key:{ 'pi':{}, '2xco2':{} } for key in runs }
+plcl_jas  = { key:{ 'pi':{}, '2xco2':{} } for key in runs }
 
 print('Calculating b for...')
 for key in runs:
@@ -301,12 +312,15 @@ for key in runs:
         plcl_jas[key][case] = jas_seasonal_mean(pl).load()
         del b, pl
 
-# mask levels below the LCL (union of both cases when 2xco2 is enabled)
+# mask levels below the LCL: union over every run and case, so that all fields (and the differences between
+# them: 2xCO2-PI, HIgbl-CTRL) are defined on common points
+plev = b_jas['ctrl']['pi'].plev
+mask = None
 for key in runs:
-    plev = b_jas[key]['pi'].plev
-    mask = below_lcl(plev, plcl_jas[key]['pi'])
-    if RUN_2XCO2:
-        mask = mask | below_lcl(plev, plcl_jas[key]['2xco2'])
+    for case in cases:
+        m = below_lcl(plev, plcl_jas[key][case])
+        mask = m if mask is None else (mask | m)
+for key in runs:
     for case in cases:
         b_jas[key][case] = b_jas[key][case].where(~mask)
         b_ann[key][case] = b_ann[key][case].where(~mask)
@@ -317,9 +331,9 @@ print('Done.')
 ## +++ COMPARING 2xCO2 TO PI +++ ##
 
 if RUN_2XCO2:   # needs the 2xCO2 case
-    future_diff      = { 'ctrl':{} }   #, 'hitopo':{} }
-    future_diff_mask = { 'ctrl':{} }   #, 'hitopo':{} }
-    future_ptvals    = { 'ctrl':{} }   #, 'hitopo':{} }
+    future_diff      = {}
+    future_diff_mask = {}
+    future_ptvals    = {}
 
     print('Significance testing for:')
     for key in runs:
@@ -330,13 +344,12 @@ if RUN_2XCO2:   # needs the 2xCO2 case
         future_diff_mask[key] = diff_mask_
         future_ptvals[key] = ptvals_
 
-# --- HIgbl - CTRL (uncomment together with 'hitopo' above) --- #
-# When hitopo is enabled, extend the LCL mask above to the union over ctrl AND hitopo so that
-# hitopo-ctrl is evaluated on common points.
-# topo_diff, topo_diff_mask, topo_ptvals = {}, {}, {}
-# for case in cases:
-#     topo_diff[case], topo_diff_mask[case], topo_ptvals[case] = sigtest2n(
-#         b_ann['hitopo'][case], b_ann['ctrl'][case], b_jas['hitopo'][case], b_jas['ctrl'][case])
+# --- HIgbl - CTRL (the LCL mask above is the union over ctrl AND hitopo, so both are on common points) --- #
+if RUN_HITOPO:
+    topo_diff, topo_diff_mask, topo_ptvals = {}, {}, {}
+    for case in cases:
+        topo_diff[case], topo_diff_mask[case], topo_ptvals[case] = sigtest2n(
+            b_ann['hitopo'][case], b_ann['ctrl'][case], b_jas['hitopo'][case], b_jas['ctrl'][case])
 print('Done.')
 
 coords_map, regions = nam_regions()
@@ -396,31 +409,48 @@ def level_maps(fields, masks, titles, vmin, vmax, nlev, label, extend='both'):
     cbar.ax.tick_params(labelsize=18)
     return fig
 
-# --- PI b maps (CTRL; add the HIgbl row/panels once hitopo is enabled) --- #
-fields=[at_level(b_jas['ctrl']['pi'], l) for l in plot_levels]
-titles=[f'CTRL {l} hPa' for l in plot_levels]
-fig=level_maps(fields, None, titles, bvmin, bvmax, 21, r'JAS $b = h_{10m} - h^{*}$ [kJ kg$^{-1}$]')
+# --- PI b maps (one figure per run; the CTRL one keeps the original file name) --- #
+for key in runs:
+    fields=[at_level(b_jas[key]['pi'], l) for l in plot_levels]
+    titles=[f'{RUN_LABEL[key]} {l} hPa' for l in plot_levels]
+    fig=level_maps(fields, None, titles, bvmin, bvmax, 21, r'JAS $b = h_{10m} - h^{*}$ [kJ kg$^{-1}$]')
+    sfx = '' if key=='ctrl' else f'_{key}'
+    plt.savefig(FIG_DIR + f'/b_flor_pi_baseline_maps{sfx}.png', transparent=False, bbox_inches='tight')
+    plt.savefig(FIG_DIR + f'/b_flor_pi_baseline_maps{sfx}.pdf', transparent=False, bbox_inches='tight')
+    plt.close('all')
 
-plt.savefig(FIG_DIR + '/b_flor_pi_baseline_maps.png', transparent=False, bbox_inches='tight')
-plt.savefig(FIG_DIR + '/b_flor_pi_baseline_maps.pdf', transparent=False, bbox_inches='tight')
-plt.close('all')
+# --- HIgbl - CTRL in PI (stippling = NOT significant) --- #
+if RUN_HITOPO:
+    fields=[at_level(topo_diff['pi'], l) for l in plot_levels]
+    masks =[at_level(topo_diff_mask['pi'], l) for l in plot_levels]
+    titles=[rf'HI$_{{gbl}}-$CTRL {l} hPa' for l in plot_levels]
+    fig=level_maps(fields, masks, titles, dvmin, dvmax, 21, r'PI HI$_{gbl}-$CTRL $\Delta b$ [kJ kg$^{-1}$]')
+    plt.savefig(FIG_DIR + '/b_flor_pi_hitopo_minus_ctrl_maps.png', transparent=False, bbox_inches='tight')
+    plt.savefig(FIG_DIR + '/b_flor_pi_hitopo_minus_ctrl_maps.pdf', transparent=False, bbox_inches='tight')
+    plt.close('all')
 
 # ### 2xCO$_2$$-$PI change in JAS buoyancy index $\Delta b$
 
 if RUN_2XCO2:   # needs the 2xCO2 case
     # --- 2xCO2 - PI Delta b maps (CTRL); stippling = NOT significant (p>0.1) --- #
-    fields=[at_level(future_diff['ctrl'], l) for l in plot_levels]
-    masks =[at_level(future_diff_mask['ctrl'], l) for l in plot_levels]
-    titles=[f'CTRL {l} hPa' for l in plot_levels]
-    fig=level_maps(fields, masks, titles, dvmin, dvmax, 21, r'2xCO$_2-$PI $\Delta b$ [kJ kg$^{-1}$]')
+    for key in runs:
+        fields=[at_level(future_diff[key], l) for l in plot_levels]
+        masks =[at_level(future_diff_mask[key], l) for l in plot_levels]
+        titles=[f'{RUN_LABEL[key]} {l} hPa' for l in plot_levels]
+        fig=level_maps(fields, masks, titles, dvmin, dvmax, 21, r'2xCO$_2-$PI $\Delta b$ [kJ kg$^{-1}$]')
+        sfx = '' if key=='ctrl' else f'_{key}'
+        plt.savefig(FIG_DIR + f'/b_flor_2xco2_delta_maps{sfx}.png', transparent=False, bbox_inches='tight')
+        plt.savefig(FIG_DIR + f'/b_flor_2xco2_delta_maps{sfx}.pdf', transparent=False, bbox_inches='tight')
+        plt.close('all')
 
-    plt.savefig(FIG_DIR + '/b_flor_2xco2_delta_maps.png', transparent=False, bbox_inches='tight')
-    plt.savefig(FIG_DIR + '/b_flor_2xco2_delta_maps.pdf', transparent=False, bbox_inches='tight')
-    plt.close('all')
-
-# --- HIgbl and HIgbl-CTRL panels (uncomment with hitopo) --- #
-# fields=[at_level(future_diff[r], l) for r in ['ctrl','hitopo'] for l in plot_levels]
-# difference of differences: future_diff['hitopo'] - future_diff['ctrl']
+    # difference of differences, HIgbl - CTRL warming response (no significance test)
+    if RUN_HITOPO:
+        fields=[at_level(future_diff['hitopo'] - future_diff['ctrl'], l) for l in plot_levels]
+        titles=[rf'HI$_{{gbl}}-$CTRL {l} hPa' for l in plot_levels]
+        fig=level_maps(fields, None, titles, dvmin, dvmax, 21, r'$\Delta b$ response: HI$_{gbl}-$CTRL [kJ kg$^{-1}$]')
+        plt.savefig(FIG_DIR + '/b_flor_2xco2_delta_hitopo_minus_ctrl_maps.png', transparent=False, bbox_inches='tight')
+        plt.savefig(FIG_DIR + '/b_flor_2xco2_delta_hitopo_minus_ctrl_maps.pdf', transparent=False, bbox_inches='tight')
+        plt.close('all')
 
 # ### Regional-mean $\Delta b$ profiles (NAM south/core and north domains)
 
@@ -466,7 +496,7 @@ if RUN_2XCO2:   # needs the 2xCO2 case
         lon2d, p2d = np.meshgrid(d.lon, d.plev/100.)
         ns = tr_mask[key].isnull().values
         ax.scatter(lon2d[ns], p2d[ns], s=25, c='k', marker='.', linewidths=0, zorder=100)
-        ax.set_title(key.upper(), fontsize=20)
+        ax.set_title(RUN_LABEL[key], fontsize=20)
         ax.set_xlabel('Longitude [$^\\circ$E]', fontsize=16)
         ax.tick_params(labelsize=14)
     axs[0,0].set_ylabel('Pressure [hPa]', fontsize=16)
@@ -536,7 +566,7 @@ def lat_pres_transect(key):
         ax.text(lat[np.nanargmin(ps_c)], (np.nanmin(ps_c) + tr_pmax) / 2, 'SMO', color='w', weight='bold', ha='center', va='center', zorder=8)
     ax.set_ylim(tr_pmax, tr_pmin); ax.set_xlim(*tr_lat_rng)
     ax.set_xlabel(r'Latitude [$^\circ$N]', fontsize=14); ax.set_ylabel('Pressure [hPa]', fontsize=14)
-    ax.set_title(f'{key.upper()} JAS, {lonw:.0f}$^\\circ$W', fontsize=16)
+    ax.set_title(f'{RUN_LABEL[key]} JAS, {lonw:.0f}$^\\circ$W', fontsize=16)
     ax.tick_params(labelsize=12); ax.legend(loc='upper left', fontsize=10)
     cbar = fig.colorbar(cf, ax=ax, orientation='horizontal', ticks=cf.levels, shrink=0.9)
     cbar.set_label(cbar_label, size=13); cbar.ax.tick_params(labelsize=10)
