@@ -231,7 +231,7 @@ for run in runs:
 ## +++ ORGANIZE DATA +++ ##
 
 # --- sub-setting bounds --- #
-latmin, latmax = 10, 70
+latmin, latmax = 5, 70
 lonmin, lonmax = 200, 300
 # years and figure directory can be overridden from the environment (used by sbatch_stability_flor_debug.sh)
 yr_min, yr_max = os.environ.get('STAB_YR_MIN', '0101'), os.environ.get('STAB_YR_MAX', '0200') # PI years
@@ -477,6 +477,77 @@ if RUN_2XCO2:   # needs the 2xCO2 case
     plt.savefig(FIG_DIR + '/b_flor_2xco2_delta_transect.png', transparent=False, bbox_inches='tight')
     plt.savefig(FIG_DIR + '/b_flor_2xco2_delta_transect.pdf', transparent=False, bbox_inches='tight')
     plt.close('all')
+
+# ### Latitude$-$pressure transect of $b$ (108$^\circ$W)
+#
+# Following Fig. 3 of Pascale et al.: black contours = PI climatological JAS-mean $b$ (dashed = negative; thick zero contour = level of free convection, LFC), black line = LCL (levels below it are masked), black fill = model terrain (JAS-mean surface pressure; the Sierra Madre Occidental near 28$^\circ$N). With only the PI case enabled the shading is the PI-mean $b$ itself; when `2xco2` is enabled the shading becomes the 2xCO$_2-$PI $\Delta b$ (stippling = significant, blue outline = land points with a significant negative $\Delta b$). Edit `tr_lon0`, `tr_lat_rng` and the levels at the top of the cell.
+
+## +++ LATITUDE-PRESSURE TRANSECT +++ ##
+
+RUN_2XCO2 = '2xco2' in cases
+tr_lon0 = 252.                  # degE (108 W): longitude of the transect (nearest model grid column is used)
+tr_lat_rng = (5, 40)            # degN range shown
+tr_pmin, tr_pmax = 100, 1000    # hPa axis limits
+stipple_significant = True      # True: stipple where the change IS significant (as in the paper); False: where it is NOT (as in the maps above)
+b_clim_levels = [-40, -30, -20, -15, -10, -5, 5, 10, 15, 20, 30, 40]   # kJ/kg, black contours of the PI climatological b (0 = LFC is drawn separately)
+dtr_levels = [-5, -4, -3, -2, -1, -0.5, -0.1, 0.1, 0.5, 1, 2, 3, 4, 5]  # kJ/kg, shading of Delta b (2xCO2 - PI)
+dtr_cmap = plt.get_cmap('RdYlBu', len(dtr_levels) - 1)                  # red = more negative buoyancy (stronger inhibition)
+
+ps_jas = {key: jas_seasonal_mean(dat[key]['pi']['ps']).load() for key in runs}   # JAS-mean surface pressure [Pa]: the terrain (SMO)
+
+def col(da):
+    """Column nearest `tr_lon0`, restricted to `tr_lat_rng`."""
+    return da.sel(lon=tr_lon0, method='nearest').sel(lat=slice(*tr_lat_rng))
+
+def lat_pres_transect(key):
+    """Latitude-pressure transect (as Fig. 3a-c of Pascale et al.): shading = 2xCO2-PI change in b (PI b if 2xCO2 is
+    not enabled), black contours = PI climatological b (dashed = negative, thick = zero = LFC), black line = LCL,
+    black fill = terrain, blue outline = land points with a significant negative change in b."""
+    b_pi = col(b_jas[key]['pi']) / 1000.                      # (plev, lat), kJ/kg; NaN below the LCL / ground
+    lat, p_hpa = b_pi.lat.values, b_pi.plev.values / 100.
+    lonw = 360. - float(b_pi.lon)
+    plcl = col(plcl_jas[key]['pi']).values / 100.             # hPa
+    ps_c = col(ps_jas[key]).values / 100.                     # hPa
+    land = col(topo[key]) > 0                                 # land proxy: model surface height > 0 m
+
+    fig, ax = plt.subplots(figsize=(7, 6), layout='constrained')
+    if RUN_2XCO2:
+        d = col(future_diff[key]) / 1000.
+        sig = col(future_diff_mask[key]).notnull()            # True where significant (p <= 0.1)
+        cf = ax.contourf(lat, p_hpa, d.values, levels=dtr_levels, cmap=dtr_cmap, extend='both')
+        cbar_label = r'2xCO$_2-$PI $\Delta b$ [kJ kg$^{-1}$]'
+        st = (sig.values if stipple_significant else ~sig.values) & d.notnull().values
+        pp, ll = np.meshgrid(p_hpa, lat, indexing='ij')
+        ax.scatter(ll[st], pp[st], s=8, c='k', marker='.', linewidths=0, zorder=5)
+        neg_sig = ((d < 0) & sig & land).astype(float)        # significant negative change over land
+        if float(neg_sig.max()) > 0:
+            ax.contour(lat, p_hpa, neg_sig.values, levels=[0.5], colors='tab:blue', linewidths=2.5, zorder=6)
+    else:
+        cf = ax.contourf(lat, p_hpa, b_pi.values, levels=np.linspace(bvmin, bvmax, 21), cmap=cmap, extend='both')
+        cbar_label = r'PI $b$ [kJ kg$^{-1}$]'
+
+    cs = ax.contour(lat, p_hpa, b_pi.values, levels=b_clim_levels, colors='k', linewidths=1.2, zorder=4)   # negative: dashed
+    ax.clabel(cs, fmt='%g', fontsize=9)
+    lfc = ax.contour(lat, p_hpa, b_pi.values, levels=[0], colors='k', linewidths=3, zorder=4)
+    ax.clabel(lfc, fmt={0: 'LFC'}, fontsize=11)
+    ax.plot(lat, plcl, color='k', lw=1, zorder=4, label='LCL')
+    ax.fill_between(lat, ps_c, tr_pmax, where=ps_c < tr_pmax, color='k', zorder=7)
+    if np.nanmin(ps_c) < tr_pmax:   # label the highest terrain along the transect
+        ax.text(lat[np.nanargmin(ps_c)], (np.nanmin(ps_c) + tr_pmax) / 2, 'SMO', color='w', weight='bold', ha='center', va='center', zorder=8)
+    ax.set_ylim(tr_pmax, tr_pmin); ax.set_xlim(*tr_lat_rng)
+    ax.set_xlabel(r'Latitude [$^\circ$N]', fontsize=14); ax.set_ylabel('Pressure [hPa]', fontsize=14)
+    ax.set_title(f'{key.upper()} JAS, {lonw:.0f}$^\\circ$W', fontsize=16)
+    ax.tick_params(labelsize=12); ax.legend(loc='upper left', fontsize=10)
+    cbar = fig.colorbar(cf, ax=ax, orientation='horizontal', ticks=cf.levels, shrink=0.9)
+    cbar.set_label(cbar_label, size=13); cbar.ax.tick_params(labelsize=10)
+    return fig, lonw
+
+for key in runs:
+    fig, lonw = lat_pres_transect(key)
+    stem = f'{FIG_DIR}/b_flor_' + ('2xco2_delta' if RUN_2XCO2 else 'pi') + f'_lat_pres_transect_{lonw:.0f}W'
+    plt.savefig(stem + '.png', transparent=False, bbox_inches='tight')
+    plt.savefig(stem + '.pdf', transparent=False, bbox_inches='tight')
+plt.close('all')
 
 # ## Convective mass flux (optional)
 #
