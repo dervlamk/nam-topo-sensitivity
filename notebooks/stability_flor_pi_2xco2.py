@@ -22,7 +22,7 @@ All under `dpath0/FLOR/{run}/{case}/`; `pi` files are `flor.{run}.{var}.monthly.
 | Input | Variable | Used for | Status |
 |---|---|---|---|
 | `temp` (full pressure levels) | $T(p)$ | $h^*$ | new, confirm |
-| `height` (full pressure levels) | $z(p)$ | $g z$ term of $h^*$ | new, confirm |
+| `z_full` (full pressure levels) | $z(p)$ | $g z$ term of $h^*$ | new, confirm |
 | `t_ref` | $T_{10\,\mathrm{m}}$ (model reference level) | $h_{10\,\mathrm{m}}$, LCL | exists (used by `warming_rate.py`), path unrecorded |
 | `q_ref` | $q_{10\,\mathrm{m}}$ | $h_{10\,\mathrm{m}}$, LCL dewpoint | new, confirm |
 | `ps` | surface pressure | LCL pressure | new, confirm |
@@ -294,7 +294,7 @@ for key in runs:
     print(f'{key}')
     for case in cases:
         d = dat[key][case]
-        b  = buoyancy_index(d['t_ref'], d['q_ref'], topo[key], d['temp'], d['height'])
+        b  = buoyancy_index(d['t_ref'], d['q_ref'], topo[key], d['temp'], d['z_full'])
         pl = lcl_pressure(d['t_ref'], d['q_ref'], d['ps'])
         b_jas[key][case]    = jas_seasonal_mean(b).load()
         b_ann[key][case]    = jas_yearly_mean(b).load().transpose('year','plev','lat','lon')
