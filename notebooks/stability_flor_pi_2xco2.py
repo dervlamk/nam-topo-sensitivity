@@ -204,7 +204,7 @@ print('All checks passed.')
 
 cases=['pi']          # , '2xco2']   # <-- 2xco2 disabled; uncomment to enable
 RUN_2XCO2 = '2xco2' in cases   # gates every 2xCO2-dependent step below
-RUN_HITOPO = False             # also run FLOR hitopo (HIgbl) and the HIgbl-CTRL comparison
+RUN_HITOPO = True              # also run FLOR hitopo (HIgbl) and the HIgbl-CTRL comparison
 runs=['ctrl','hitopo'] if RUN_HITOPO else ['ctrl']
 RUN_LABEL = {'ctrl':'CTRL', 'hitopo':r'HI$_{gbl}$'}   # plot labels
 
