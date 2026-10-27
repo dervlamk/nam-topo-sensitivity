@@ -202,7 +202,7 @@ print('All checks passed.')
 
 ### +++ DATA PATHS +++ ###
 
-cases=['pi']          # , '2xco2']   # <-- 2xco2 disabled; uncomment to enable
+cases=['pi','2xco2']   # drop '2xco2' to run PI only
 RUN_2XCO2 = '2xco2' in cases   # gates every 2xCO2-dependent step below
 RUN_HITOPO = True              # also run FLOR hitopo (HIgbl) and the HIgbl-CTRL comparison
 runs=['ctrl','hitopo'] if RUN_HITOPO else ['ctrl']
