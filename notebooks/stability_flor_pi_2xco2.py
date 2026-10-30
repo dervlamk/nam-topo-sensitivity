@@ -216,15 +216,10 @@ files={ 'ctrl':   { 'pi':{}, '2xco2':{} },
         'hitopo': { 'pi':{}, '2xco2':{} }
       }
 
-Q_REF_YEARS = {'pi':('0101','0200'), '2xco2':('0200','0299')}   # periods of the year-tagged q_ref files made by q_ref_from_rh.py
 
 def flor_path(key, case, varn):
-    """Monthly FLOR file. q_ref: the year-tagged file from q_ref_from_rh.py if it exists, else the untagged name."""
+    """Monthly FLOR file: flor.{run}[.{case}].{var}.monthly.nc"""
     tag = f'flor.{key}' if case=='pi' else f'flor.{key}.{case}'
-    if varn=='q_ref':
-        tagged = f'{dpath0}/FLOR/{key}/{case}/{tag}.q_ref.{"-".join(Q_REF_YEARS[case])}.monthly.nc'
-        if os.path.exists(tagged):
-            return tagged
     return f'{dpath0}/FLOR/{key}/{case}/{tag}.{varn}.monthly.nc'
 
 for key in runs:
