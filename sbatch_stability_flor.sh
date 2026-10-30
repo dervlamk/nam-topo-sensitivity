@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --job-name=stability_flor_pi
+#SBATCH --job-name=stability_flor_pi_2xco2
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=128G                # EDIT: 3-D FLOR fields are large; raise if the job is killed for memory
-#SBATCH --time=04:00:00           # EDIT: untested on the real data, so start generous
-#SBATCH --error=logs/stability_flor_pi_%j.err
-#SBATCH --output=logs/stability_flor_pi_%j.out
+#SBATCH --time=08:00:00           # EDIT: PI + 2xCO2 for ctrl and hitopo
+#SBATCH --error=logs/stability_flor_pi_2xco2_%j.err
+#SBATCH --output=logs/stability_flor_pi_2xco2_%j.out
 #SBATCH --account=s1001
 
 # Run the buoyancy-index (stability) analysis for FLOR ctrl and hitopo PI.

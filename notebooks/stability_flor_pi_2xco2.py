@@ -202,7 +202,7 @@ print('All checks passed.')
 
 ### +++ DATA PATHS +++ ###
 
-cases=['pi']          # , '2xco2']   # <-- 2xco2 disabled; uncomment to enable
+cases=['pi','2xco2']
 RUN_2XCO2 = '2xco2' in cases   # gates every 2xCO2-dependent step below
 RUN_HITOPO = True              # also run FLOR hitopo (HIgbl) and the HIgbl-CTRL comparison
 runs=['ctrl','hitopo'] if RUN_HITOPO else ['ctrl']
@@ -210,7 +210,7 @@ RUN_LABEL = {'ctrl':'CTRL', 'hitopo':r'HI$_{gbl}$'}   # plot labels
 
 vars_3d=['temp','z_full']  # full pressure-level fields, CONFIRM file/variable names
 vars_2d=['t_ref','q_ref','ps']   # CONFIRM file/variable names (t_ref: see warming_rate.py)
-PLEV_NAME = 'pfull'        # name of the pressure-level dimension in the 3-D files, CONFIRM
+PLEV_NAME = 'level'        # pressure-level dimension in the 3-D files (hPa: 1000,925,850,700,600,500,400,300,250,200,150,100,70,50,30,20,10)
 
 files={ 'ctrl':   { 'pi':{}, '2xco2':{} },
         'hitopo': { 'pi':{}, '2xco2':{} }
@@ -249,7 +249,7 @@ yr_min, yr_max = os.environ.get('STAB_YR_MIN', '0101'), os.environ.get('STAB_YR_
 yr_min_2x, yr_max_2x = '0200', '0299' # 2xCO2 years (CO2 held at 2x after doubling at ~yr 170)
 FIG_DIR = os.environ.get('STAB_FIG_DIR', '../figs')
 os.makedirs(FIG_DIR, exist_ok=True)
-plev_min = 20000.  # Pa, drop levels above 200 hPa -> this is only to save compute requirements, not done by Pascale et al. originally
+plev_min = 10000.  # Pa, drop levels above 100 hPa -> this is only to save compute requirements, not done by Pascale et al. originally
 
 def load_var(path, varn, case, is_3d=False):
     """Open one FLOR variable, select the case's years and JAS months (the only months used downstream),
