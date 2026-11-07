@@ -23,8 +23,10 @@ logs/
 # Model output
 *.nc
 
-# Old figures
+# Old or edited figures
 figs/deprecated
+figs/*edit*
+figs/*.svg
 
 # Large files
 figs/study_region_geographic_features.pdf
