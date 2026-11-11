@@ -35,12 +35,12 @@ flor_ctrl,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/topo_files/flor.c
 flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.precip.monthly.nc,FLOR hitopo PI precip,"flor_pi, flor_2xCO2",yes,cm2pt5-flor.higbl.pi.precip.monthly.nc
 flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/2xco2/flor.hitopo.2xco2.precip.monthly.nc,FLOR hitopo 2xCO2 precip,flor_2xCO2,yes,cm2pt5-flor.higbl.2xco2.precip.monthly.nc
 flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.h500.monthly.nc,FLOR hitopo 500 hPa height,500mb_geopotential,yes,cm2pt5-flor.higbl.pi.h500.monthly.nc
-flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.h700.monthly.nc,FLOR hitopo 700 hPa height,700mb_psi,yes,cm2pt5-flor.higbl.pi.q925.monthly.nc
+flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.h700.monthly.nc,FLOR hitopo 700 hPa height,700mb_psi,yes,cm2pt5-flor.higbl.pi.h700.monthly.nc
 flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.u700.monthly.nc,FLOR hitopo 700 hPa U wind,700mb_psi,yes,cm2pt5-flor.higbl.pi.u700.monthly.nc
 flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.v700.monthly.nc,FLOR hitopo 700 hPa V wind,700mb_psi,yes,cm2pt5-flor.higbl.pi.v700.monthly.nc
 flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.u925.monthly.nc,FLOR hitopo 925 hPa U wind,"slp_gocllj, slp_qv",yes,cm2pt5-flor.higbl.pi.u925.monthly.nc
 flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.v925.monthly.nc,FLOR hitopo 925 hPa V wind,"slp_gocllj, slp_qv",yes,cm2pt5-flor.higbl.pi.v925.monthly.nc
-flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.q925.monthly.nc,FLOR hitopo 925 hPa specific humidity,slp_qv,yes,cm2pt5-flor.hitopo.pi.q925.monthly.nc
+flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.q925.monthly.nc,FLOR hitopo 925 hPa specific humidity,slp_qv,yes,cm2pt5-flor.higbl.pi.q925.monthly.nc
 flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.slp.monthly.nc,FLOR hitopo sea level pressure,"slp_gocllj, slp_qv",yes,cm2pt5-flor.higbl.pi.slp.monthly.nc
 flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.temp.monthly.nc,FLOR hitopo pi 3D temperature,stability_flor_pi_2xco2,yes,cm2pt5-flor.higbl.pi.temp.monthly.nc
 flor_hitopo,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hitopo/pi/flor.hitopo.z_full.monthly.nc,FLOR hitopo pi 3D geopotential height,stability_flor_pi_2xco2,yes,cm2pt5-flor.higbl.pi.z_full.monthly.nc
@@ -61,7 +61,7 @@ flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/fl
 flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.v700.monthly.nc,FLOR hicam 700 hPa V wind,700mb_psi,yes,cm2pt5-flor.himex.pi.v700.monthly.nc
 flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.u925.monthly.nc,FLOR hicam 925 hPa U wind,"slp_gocllj, slp_qv",yes,cm2pt5-flor.himex.pi.u925.monthly.nc
 flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.v925.monthly.nc,FLOR hicam 925 hPa V wind,"slp_gocllj, slp_qv",yes,cm2pt5-flor.himex.pi.v925.monthly.nc
-flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.q925.monthly.nc,FLOR hicam 925 hPa specific humidity,slp_qv,no,cm2pt5-flor.himex.pi.q925.monthly.nc
+flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.q925.monthly.nc,FLOR hicam 925 hPa specific humidity,slp_qv,yes,cm2pt5-flor.himex.pi.q925.monthly.nc
 flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.slp.monthly.nc,FLOR hicam sea level pressure,"slp_gocllj, slp_qv",yes,cm2pt5-flor.himex.pi.slp.monthly.nc
 flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/FLOR/hicam/pi/flor.hicam.sst.nc,FLOR hicam SST (t_surf; placeholder name),sst_flor_pi,yes,cm2pt5-flor.himex.pi.sst.monthly.nc
 flor_hicam,/discover/nobackup/projects/giss/baldwin_nip/dmkumar/topo_files/flor.hicam.zsurf.nc,FLOR cam ZSURF topography,"flor_pi, 700mb_psi, slp_gocllj, slp_qv, topography",yes,cm2pt5-flor.himex.zsurf.nc
