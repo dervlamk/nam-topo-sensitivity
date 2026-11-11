@@ -32,10 +32,11 @@ in `DATA_MANIFEST.csv` (the `group` column matches the section headings below).
 
 | File | Variable | Used by |
 |---|---|---|
-| `merra2.U.1980-2022.monthly.nc` | U winds (lev 700, 925) | 700mb_psi, slp_gocllj |
-| `merra2.V.1980-2022.monthly.nc` | V winds (lev 700, 925) | 700mb_psi, slp_gocllj |
+| `merra2.U.1980-2022.monthly.nc` | U winds (lev 700, 925) | 700mb_psi, slp_gocllj, slp_qv |
+| `merra2.V.1980-2022.monthly.nc` | V winds (lev 700, 925) | 700mb_psi, slp_gocllj, slp_qv |
+| `merra2.QV.1980-2022.monthly.nc` | Specific humidity (lev 925) | slp_qv |
 | `merra2.H.1980-2022.monthly.nc` | Geopotential height (lev 500, 700) | 500mb_geopotential, 700mb_psi |
-| `merra2.SLP.1980-2022.monthly.nc` | Sea level pressure | slp_gocllj |
+| `merra2.SLP.1980-2022.monthly.nc` | Sea level pressure | slp_gocllj, slp_qv |
 
 ### Observed topography — `topo_files/`
 
@@ -97,9 +98,10 @@ ZSURF topography boundary condition. Cases: `pi` (pre-industrial), `2xco2`.
 | `FLOR/ctrl/pi/flor.ctrl.h700.monthly.nc` | 700 hPa height | 700mb_psi |
 | `FLOR/ctrl/pi/flor.ctrl.u700.monthly.nc` | 700 hPa U wind | 700mb_psi |
 | `FLOR/ctrl/pi/flor.ctrl.v700.monthly.nc` | 700 hPa V wind | 700mb_psi |
-| `FLOR/ctrl/pi/flor.ctrl.u925.monthly.nc` | 925 hPa U wind | slp_gocllj |
-| `FLOR/ctrl/pi/flor.ctrl.v925.monthly.nc` | 925 hPa V wind | slp_gocllj |
-| `FLOR/ctrl/pi/flor.ctrl.slp.monthly.nc` | Sea level pressure | slp_gocllj |
+| `FLOR/ctrl/pi/flor.ctrl.u925.monthly.nc` | 925 hPa U wind | slp_gocllj, slp_qv |
+| `FLOR/ctrl/pi/flor.ctrl.v925.monthly.nc` | 925 hPa V wind | slp_gocllj, slp_qv |
+| `FLOR/ctrl/pi/flor.ctrl.q925.monthly.nc` | 925 hPa specific humidity | slp_qv |
+| `FLOR/ctrl/pi/flor.ctrl.slp.monthly.nc` | Sea level pressure | slp_gocllj, slp_qv |
 | `FLOR/ctrl/pi/flor.ctrl.sst.nc` | SST (`t_surf`) — **placeholder name, see SST section** | sst_flor_pi |
 | `FLOR/ctrl/pi/flor.ctrl.temp.monthly.nc` | 3D temperature (pi) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
 | `FLOR/ctrl/pi/flor.ctrl.z_full.monthly.nc` | 3D height (pi) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
@@ -123,11 +125,22 @@ ZSURF topography boundary condition. Cases: `pi` (pre-industrial), `2xco2`.
 | `FLOR/hitopo/pi/flor.hitopo.h700.monthly.nc` | 700 hPa height | 700mb_psi |
 | `FLOR/hitopo/pi/flor.hitopo.u700.monthly.nc` | 700 hPa U wind | 700mb_psi |
 | `FLOR/hitopo/pi/flor.hitopo.v700.monthly.nc` | 700 hPa V wind | 700mb_psi |
-| `FLOR/hitopo/pi/flor.hitopo.u925.monthly.nc` | 925 hPa U wind | slp_gocllj |
-| `FLOR/hitopo/pi/flor.hitopo.v925.monthly.nc` | 925 hPa V wind | slp_gocllj |
-| `FLOR/hitopo/pi/flor.hitopo.slp.monthly.nc` | Sea level pressure | slp_gocllj |
+| `FLOR/hitopo/pi/flor.hitopo.u925.monthly.nc` | 925 hPa U wind | slp_gocllj, slp_qv |
+| `FLOR/hitopo/pi/flor.hitopo.v925.monthly.nc` | 925 hPa V wind | slp_gocllj, slp_qv |
+| `FLOR/hitopo/pi/flor.hitopo.q925.monthly.nc` | 925 hPa specific humidity | slp_qv |
+| `FLOR/hitopo/pi/flor.hitopo.slp.monthly.nc` | Sea level pressure | slp_gocllj, slp_qv |
+| `FLOR/hitopo/pi/flor.hitopo.temp.monthly.nc` | 3D temperature (pi) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
+| `FLOR/hitopo/pi/flor.hitopo.z_full.monthly.nc` | 3D height (pi) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
+| `FLOR/hitopo/pi/flor.hitopo.t_ref.monthly.nc` | Reference-height temperature (pi) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
+| `FLOR/hitopo/pi/flor.hitopo.q_ref.monthly.nc` | Reference-height specific humidity (pi) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
+| `FLOR/hitopo/pi/flor.hitopo.ps.monthly.nc` | Surface pressure (pi) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
+| `FLOR/hitopo/2xco2/flor.hitopo.2xco2.temp.monthly.nc` | 3D temperature (2xco2) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
+| `FLOR/hitopo/2xco2/flor.hitopo.2xco2.z_full.monthly.nc` | 3D height (2xco2) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
+| `FLOR/hitopo/2xco2/flor.hitopo.2xco2.t_ref.monthly.nc` | Reference-height temperature (2xco2) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
+| `FLOR/hitopo/2xco2/flor.hitopo.2xco2.q_ref.monthly.nc` | Reference-height specific humidity (2xco2) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
+| `FLOR/hitopo/2xco2/flor.hitopo.2xco2.ps.monthly.nc` | Surface pressure (2xco2) — **file name assumed, confirm** | stability_flor_pi_2xco2 |
 | `FLOR/hitopo/pi/flor.hitopo.sst.nc` | SST (`t_surf`) — **placeholder name, see SST section** | sst_flor_pi |
-| `topo_files/flor.hitopo.zsurf.nc` | ZSURF topography | all FLOR notebooks, topography |
+| `topo_files/flor.hitopo.zsurf.nc` | ZSURF topography | all FLOR notebooks, topography, stability_flor_pi_2xco2 |
 
 ### FLOR hicam
 
@@ -138,11 +151,12 @@ ZSURF topography boundary condition. Cases: `pi` (pre-industrial), `2xco2`.
 | `FLOR/hicam/pi/flor.hicam.h700.monthly.nc` | 700 hPa height | 700mb_psi |
 | `FLOR/hicam/pi/flor.hicam.u700.monthly.nc` | 700 hPa U wind | 700mb_psi |
 | `FLOR/hicam/pi/flor.hicam.v700.monthly.nc` | 700 hPa V wind | 700mb_psi |
-| `FLOR/hicam/pi/flor.hicam.u925.monthly.nc` | 925 hPa U wind | slp_gocllj |
-| `FLOR/hicam/pi/flor.hicam.v925.monthly.nc` | 925 hPa V wind | slp_gocllj |
-| `FLOR/hicam/pi/flor.hicam.slp.monthly.nc` | Sea level pressure | slp_gocllj |
+| `FLOR/hicam/pi/flor.hicam.u925.monthly.nc` | 925 hPa U wind | slp_gocllj, slp_qv |
+| `FLOR/hicam/pi/flor.hicam.v925.monthly.nc` | 925 hPa V wind | slp_gocllj, slp_qv |
+| `FLOR/hicam/pi/flor.hicam.q925.monthly.nc` | 925 hPa specific humidity | slp_qv |
+| `FLOR/hicam/pi/flor.hicam.slp.monthly.nc` | Sea level pressure | slp_gocllj, slp_qv |
 | `FLOR/hicam/pi/flor.hicam.sst.nc` | SST (`t_surf`) — **placeholder name, see SST section** | sst_flor_pi |
-| `topo_files/flor.hicam.zsurf.nc` | ZSURF topography | flor_pi, 500mb_geopotential, 700mb_psi, slp_gocllj, topography |
+| `topo_files/flor.hicam.zsurf.nc` | ZSURF topography | flor_pi, 500mb_geopotential, 700mb_psi, slp_gocllj, slp_qv, topography |
 
 > `500mb_geopotential_flor_pi.ipynb` now also uses `flor.hicam.zsurf.nc`, like every other notebook
 > (an earlier `flor.cam.zsurf.nc` reference is gone).
